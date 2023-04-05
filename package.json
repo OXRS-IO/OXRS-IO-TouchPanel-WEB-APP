@@ -1,0 +1,39 @@
+{
+  "name": "OXRS-IO-TouchPanel-WEB-APP",
+  "description": "OXRS IO Touch Panel Web App",
+  "author": "Christopher Aitken",
+  "homepage": "https://github.com/caitken-com",
+  "version": "0.0.6",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5050"
+  },
+  "keywords": [
+    "oxrs",
+    "home-automation"
+  ],
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.1.1",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "paho-mqtt": "^1.1.0",
+    "pinia": "^2.0.13",
+    "process": "^0.11.10",
+    "tinyify": "^3.0.0",
+    "vite-plugin-css-injected-by-js": "^3.1.0",
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.14",
+    "webpack": "^5.71.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.10",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vitejs/plugin-vue-jsx": "^1.3.9",
+    "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
+    "html-webpack-plugin": "^5.5.0",
+    "vite": "^2.9.1"
+  }
+}
