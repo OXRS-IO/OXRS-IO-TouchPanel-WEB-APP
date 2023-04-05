@@ -92,6 +92,7 @@ export default
 	mounted()
 	{
 		this.updateForm()
+		document.querySelector('body').setAttribute('style', `background-color: rgb(0, 0, 0)`)
 	},
 }
 </script>

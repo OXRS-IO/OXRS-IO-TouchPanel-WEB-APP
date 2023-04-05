@@ -444,6 +444,18 @@ export default
 
 
 		/**
+		 * @description Navigate to given URL
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @param {string} url
+		 * @return {void}
+		 */
+		navigateToUrl(url)
+		{
+			router.push(url)
+		},
+
+
+		/**
 		 * @description Encrypts string
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
 		 * @param {String} str String to encode

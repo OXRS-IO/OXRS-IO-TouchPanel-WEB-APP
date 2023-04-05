@@ -40,6 +40,9 @@ export default
 					<button @click="this.$root.navigateToScreen(screen.id)">{{ screen.label }}</button>
 				</li>
 			</template>
+			<li>
+				<button @click="this.$root.navigateToUrl('/config')">Settings</button>
+			</li>
 		</ul>
 	</div>
 

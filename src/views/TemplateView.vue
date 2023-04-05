@@ -124,9 +124,9 @@ footer h2:nth-child(3)
 .tile
 {
 	background-color: rgba(255,255,255,0.1);
+	transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 	-webkit-backdrop-filter: saturate(180%) blur(20px);
 	backdrop-filter: saturate(180%) blur(20px);
-	box-shadow: 0 0 1em rgba(0,0,0,0.2);
 	aspect-ratio: 1 / 1;
 	border-radius: 1rem;
 	overflow: hidden;
@@ -134,6 +134,10 @@ footer h2:nth-child(3)
 	align-items: start;
 	padding: 1rem;
 	color: #fff;
+}
+.tile:hover
+{
+	box-shadow: 0 0 1em rgba(0,0,0,0.2);
 }
 .tile.state-off
 {

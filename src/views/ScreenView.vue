@@ -1,5 +1,4 @@
 <script setup>
-import router from '@/router'
 import ButtonDefault from '@/components/ButtonDefault.vue'
 import ButtonUpDown from '@/components/ButtonUpDown.vue'
 import ButtonLevelDown from '@/components/ButtonLevelDown.vue'
@@ -106,15 +105,15 @@ export default
 			switch (button)
 			{
 				case 'left':
-					router.push('/screen/1')
+					this.$root.navigateToUrl('/screen/1')
 					break;
 
 				case 'center':
-					router.push('/')
+					this.$root.navigateToUrl('/')
 					break;
 
 				case 'right':
-					router.push('/config')
+					this.$root.navigateToUrl('/config')
 					break;
 			}
 		},
