@@ -138,7 +138,7 @@ export default
 	-webkit-mask-size: 20%;
 	mask-size: 20%;
 	-webkit-mask-position: 100% 50%;
-    mask-position:  100% 50%;
+	mask-position:  100% 50%;
 }
 .tile.enabled-false button
 {

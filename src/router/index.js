@@ -10,7 +10,7 @@ const router = createRouter({
 			name: 'Home',
 			component: Template,
 			props: {
-				bodyView: 'home'
+				bodyView: 'home',
 			}
 		},
 		{
@@ -18,7 +18,7 @@ const router = createRouter({
 			name: 'Config',
 			component: Template,
 			props: {
-				bodyView: 'config'
+				bodyView: 'config',
 			}
 		},
 		{
@@ -26,15 +26,15 @@ const router = createRouter({
 			name: 'Screen',
 			component: Template,
 			props: {
-				bodyView: 'screen'
+				bodyView: 'screen',
 			}
 		},
 		{
-			path: '/screen/:id/:tile/settings',
+			path: '/screen/:id/tile/:tile/settings',
 			name: 'Settings',
 			component: Template,
 			props: {
-				bodyView: 'settings'
+				bodyView: 'settings',
 			}
 		}
 	]

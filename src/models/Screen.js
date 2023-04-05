@@ -52,9 +52,11 @@ class Screen
 
 				// Populate footer text
 				case 'footer':
-					if ('left' in data[key]) this.footer.left = data[key]['left']
-					if ('center' in data[key]) this.footer.center = data[key]['center']
-					if ('right' in data[key]) this.footer.right = data[key]['right']
+					if (typeof data[key] != 'object') data[key] = {}
+
+					this.footer.left = ('left' in data[key]) ? data[key]['left'] : null
+					this.footer.center = ('center' in data[key]) ? data[key]['center'] : null
+					this.footer.right = ('right' in data[key]) ? data[key]['right'] : null
 
 				case 'backgroundColorRgb':
 					if (typeof data[key] != "object") data[key] = {}
@@ -149,27 +151,6 @@ class Screen
 				this.addTile(list[idx])
 			}
 		}
-	}
-
-
-	/**
-	 * @description Generate breadcrumbs for given screen
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
-	 * @param {Vue} app Vue app instance
-	 * @returns {Array}
-	 */
-	getCrumbs(app)
-	{
-		return [
-			{
-				name: 'Home',
-				path: '/'
-			},
-			{
-				name: this.label,
-				path: ''
-			}
-		]
 	}
 
 

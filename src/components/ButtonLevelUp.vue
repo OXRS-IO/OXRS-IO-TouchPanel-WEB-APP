@@ -283,6 +283,8 @@ export default
 	right: 0;
 	-webkit-mask-size: 50%;
 	mask-size: 50%;
+	-webkit-mask-position: 65% 50%;
+	mask-position: 65% 50%;
 }
 
 .buttons button:nth-child(3)
@@ -295,6 +297,8 @@ export default
 	right: 0;
 	-webkit-mask-size: 50%;
 	mask-size: 50%;
+	-webkit-mask-position: 65% 50%;
+	mask-position: 65% 50%;
 }
 
 .tile.state-on

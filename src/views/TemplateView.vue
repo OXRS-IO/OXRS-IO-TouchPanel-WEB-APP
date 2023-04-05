@@ -12,87 +12,7 @@ defineProps({
 })
 </script>
 
-
-<script>
-export default
-{
-	/**
-	 * @description Watch for navigation changes, and populate bread-crumb accordingly
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
-	 * @return	{void}
-	 */
-	created()
-	{
-		this.$watch(
-			() => this.$route.params,
-			() =>
-			{
-				this.updateCrumbs()
-			},
-			{
-				immediate: true
-			}
-		)
-
-		this.$watch(
-			() => this.$root.screens[this.$route.params.id],
-			() =>
-			{
-				this.updateCrumbs()
-			},
-			{
-				immediate: true
-			}
-		)
-	},
-
-
-	data()
-	{
-		return {
-			bread_crumbs: [],
-		}
-	},
-
-
-	methods:
-	{
-		/**
-		 * @description Populate breadcrumbs for current page
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @returns {void}
-		 */
-		updateCrumbs()
-		{
-			this.icons = this.$root.icons
-
-			let screen = this.$root.getScreen(this.$route.params.id)
-			if (!screen) return
-			this.bread_crumbs = screen.getCrumbs(this.$root)
-		}
-	},
-
-
-	mounted()
-	{
-		this.updateCrumbs()
-	},
-}
-</script>
-
-
 <template>
-	<header>
-		<h1>
-			<span v-for="(crumb, index) in bread_crumbs" :key="index">
-				<template v-if="crumb.path">
-					<RouterLink :to="crumb.path">{{ crumb.name }}</RouterLink>
-				</template>
-				<template v-else>{{ crumb.name }}</template>
-			</span>
-		</h1>
-	</header>
-
 	<main>
 		<HomeView v-if="bodyView == 'home'"></HomeView>
 		<ConfView v-if="bodyView == 'config'"></ConfView>
@@ -133,14 +53,16 @@ button
 	zoom: 1.0;
 }
 
-body {
+body
+{
 	background-color: #000;
 	font-family: sans-serif;
 	font-size: 18px;
 	padding: 1rem;
 }
 
-footer {
+footer
+{
 	margin-top: 2em;
 }
 
@@ -150,7 +72,6 @@ a:visited
 	text-decoration: none;
 	color: inherit;
 }
-
 a:hover,
 a:active,
 a:focus
@@ -159,57 +80,35 @@ a:focus
 	color: inherit;
 }
 
+.icon--before,
+.icon--after
+{
+	position: relative;
+}
 .icon--before:before,
 .icon--after:after,
 .icon--mask
 {
+	background-color: #fff;
+	-webkit-mask-size: 100%;
+	mask-size: 100%;
 	-webkit-mask-repeat: no-repeat;
 	mask-repeat: no-repeat;
 	-webkit-mask-position: 50%;
 	mask-position: 50%;
 }
-
 .icon--before:before,
 .icon--after:after
 {
 	content: "";
+	height: 70%;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 25%);
+	aspect-ratio: 1 /1;
 }
 
-h1
-{
-	margin-bottom: 1rem;
-	line-height: 1em;
-	color: rgba(255,255,255,0.5);
-}
-
-h1 span:before
-{
-	background-color: rgba(255,255,255,0.5);
-	margin: 0 0.5rem;
-	content: "";
-	display: inline-block;
-	width: 1em;
-	aspect-ratio: 1 / 1;
-	-webkit-mask-size: 100%;
-	mask-size: 100%;
-	vertical-align: text-top;
-	-webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktY2hldnJvbi1yaWdodCIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjY0NiAxLjY0NmEuNS41IDAgMCAxIC43MDggMGw2IDZhLjUuNSAwIDAgMSAwIC43MDhsLTYgNmEuNS41IDAgMCAxLS43MDgtLjcwOEwxMC4yOTMgOCA0LjY0NiAyLjM1NGEuNS41IDAgMCAxIDAtLjcwOHoiLz4KPC9zdmc+);
-	mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktY2hldnJvbi1yaWdodCIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjY0NiAxLjY0NmEuNS41IDAgMCAxIC43MDggMGw2IDZhLjUuNSAwIDAgMSAwIC43MDhsLTYgNmEuNS41IDAgMCAxLS43MDgtLjcwOEwxMC4yOTMgOCA0LjY0NiAyLjM1NGEuNS41IDAgMCAxIDAtLjcwOHoiLz4KPC9zdmc+);
-}
-
-h1 span:first-child:before
-{
-	-webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktaG91c2UiIHZpZXdCb3g9IjAgMCAxNiAxNiI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMiAxMy41VjdoMXY2LjVhLjUuNSAwIDAgMCAuNS41aDlhLjUuNSAwIDAgMCAuNS0uNVY3aDF2Ni41YTEuNSAxLjUgMCAwIDEtMS41IDEuNWgtOUExLjUgMS41IDAgMCAxIDIgMTMuNXptMTEtMTFWNmwtMi0yVjIuNWEuNS41IDAgMCAxIC41LS41aDFhLjUuNSAwIDAgMSAuNS41eiIvPgogIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTcuMjkzIDEuNWExIDEgMCAwIDEgMS40MTQgMGw2LjY0NyA2LjY0NmEuNS41IDAgMCAxLS43MDguNzA4TDggMi4yMDcgMS4zNTQgOC44NTRhLjUuNSAwIDEgMS0uNzA4LS43MDhMNy4yOTMgMS41eiIvPgo8L3N2Zz4=);
-	mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktaG91c2UiIHZpZXdCb3g9IjAgMCAxNiAxNiI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMiAxMy41VjdoMXY2LjVhLjUuNSAwIDAgMCAuNS41aDlhLjUuNSAwIDAgMCAuNS0uNVY3aDF2Ni41YTEuNSAxLjUgMCAwIDEtMS41IDEuNWgtOUExLjUgMS41IDAgMCAxIDIgMTMuNXptMTEtMTFWNmwtMi0yVjIuNWEuNS41IDAgMCAxIC41LS41aDFhLjUuNSAwIDAgMSAuNS41eiIvPgogIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTcuMjkzIDEuNWExIDEgMCAwIDEgMS40MTQgMGw2LjY0NyA2LjY0NmEuNS41IDAgMCAxLS43MDguNzA4TDggMi4yMDcgMS4zNTQgOC44NTRhLjUuNSAwIDEgMS0uNzA4LS43MDhMNy4yOTMgMS41eiIvPgo8L3N2Zz4=);
-	margin-left: 0;
-}
-
-h1 a:hover,
-h1 a:active,
-h1 a:focus
-{
-	color: rgba(255,255,255,1);
-}
 footer h2
 {
 	color: #fff;
@@ -227,6 +126,7 @@ footer h2:nth-child(3)
 	background-color: rgba(255,255,255,0.1);
 	-webkit-backdrop-filter: saturate(180%) blur(20px);
 	backdrop-filter: saturate(180%) blur(20px);
+	box-shadow: 0 0 1em rgba(0,0,0,0.2);
 	aspect-ratio: 1 / 1;
 	border-radius: 1rem;
 	overflow: hidden;
@@ -263,9 +163,10 @@ footer h2:nth-child(3)
 	{
 		font-size: small;
 	}
-	footer h2
+	footer h2,
+	footer button
 	{
-		font-size: smaller;
+		font-size: smaller !important;
 	}
 }
 
@@ -320,9 +221,6 @@ footer h2:nth-child(3)
 
 .tile .icon
 {
-	background-color: #fff;
-	-webkit-mask-size: 100%;
-	mask-size: 100%;
 	aspect-ratio: 1 / 1;
 }
 

@@ -1,4 +1,5 @@
 <script setup>
+import router from '@/router'
 import ButtonDefault from '@/components/ButtonDefault.vue'
 import ButtonUpDown from '@/components/ButtonUpDown.vue'
 import ButtonLevelDown from '@/components/ButtonLevelDown.vue'
@@ -92,6 +93,31 @@ export default
 
 			this.screen.applyBgColor()
 		},
+
+
+		/**
+		 * @description Mouse click event handler
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @param {string} button `left|center|right`
+		 * @return {void}
+		 */
+		press(button)
+		{
+			switch (button)
+			{
+				case 'left':
+					router.push('/screen/1')
+					break;
+
+				case 'center':
+					router.push('/')
+					break;
+
+				case 'right':
+					router.push('/config')
+					break;
+			}
+		},
 	},
 
 
@@ -126,8 +152,74 @@ export default
 	</div>
 
 	<footer bp="grid 4">
-		<h2>{{ screen.footer.left }}</h2>
-		<h2>{{ screen.footer.center }}</h2>
-		<h2>{{ screen.footer.right }}</h2>
+		<template v-if="screen.footer.left">
+			<h2>{{ screen.footer.left }}</h2>
+		</template>
+		<template v-else>
+			<button class="icon icon--before icon-_home" @click="press('left')"></button>
+		</template>
+
+		<template v-if="screen.footer.center">
+			<button @click="press('center')">{{ screen.footer.center }}</button>
+		</template>
+		<template v-else>
+			<button @click="press('center')">{{ screen.label }}</button>
+		</template>
+
+		<template v-if="screen.footer.right">
+			<h2>{{ screen.footer.right }}</h2>
+		</template>
+		<template v-else>
+			<button class="icon icon--before icon-_settings" @click="press('right')"></button>
+		</template>
+
 	</footer>
 </template>
+
+<style scoped>
+footer h2
+{
+	padding: 1rem;
+}
+footer button
+{
+	padding: 1rem;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	-webkit-mask-size: 10%;
+    mask-size: 10%;
+	border-radius: 1rem;
+	font-size: 2rem;
+	color: #fff;
+}
+footer button:hover,
+footer button:active,
+footer button:focus
+{
+	background-color: rgba(255,255,255,0.1);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+}
+footer button.icon--before:before
+{
+	background-color: rgba(255,255,255,0.6);
+}
+footer button:hover.icon--before:before
+{
+	background-color: rgba(255,255,255,1);
+}
+
+footer button:nth-child(1)
+{
+	text-align: left;
+}
+footer button:nth-child(2)
+{
+	text-align: center;
+}
+footer button:nth-child(3)
+{
+	text-align: right;
+}
+</style>

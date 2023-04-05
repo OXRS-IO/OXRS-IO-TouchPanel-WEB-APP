@@ -67,7 +67,7 @@ export default
 			}
 			catch (err)
 			{
-				alert(`Err 1: ${err.message}`);
+				alert(err);
 				router.push('/config')
 			}
 		},
@@ -118,9 +118,9 @@ export default
 					router.push(`/`)
 				}
 			}
-			catch (err)
+			catch (error)
 			{
-				alert(`Err 2: ${err.message}`);
+				console.log(error)
 			}
 		},
 
@@ -131,10 +131,9 @@ export default
 		 * @param {Object} response
 		 * @returns {void}
 		 */
-		mqttOnDisconnect(response)
+		mqttOnDisconnect(error)
 		{
-			console.log(response)
-			alert(`Err 4: ${response.errorMessage}`);
+			console.log(error)
 		},
 
 
@@ -217,7 +216,7 @@ export default
 			}
 			catch (err)
 			{
-				alert('Err 3: Malformed configuration')
+				alert('Malformed configuration!')
 				return
 			}
 
@@ -345,7 +344,7 @@ export default
 				}
 				catch (error)
 				{
-					alert(`Err 6: ${error}`)
+					console.log(error)
 				}
 			}
 		},

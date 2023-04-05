@@ -1,30 +1,42 @@
 <script setup>
 defineProps({
-	host: {
+	host:
+	{
 		type: String,
-		default: localStorage.host,
-		required: true
+		required: true,
 	},
-	port: {
+	port:
+	{
 		type: Number,
-		default: localStorage.port,
-		required: true
+		required: true,
 	},
-	username: {
+	username:
+	{
 		type: String,
-		default: localStorage.username,
-		required: false
+		required: false,
 	},
-	password: {
+	password:
+	{
 		type: String,
-		default: localStorage.password,
-		required: false
+		required: false,
 	},
-	device: {
+	device:
+	{
 		type: String,
-		default: localStorage.device,
-		required: true
+		required: true,
 	},
+	prefix:
+	{
+		type: String,
+	},
+	suffix:
+	{
+		type: String,
+	},
+	ssl:
+	{
+		type: Boolean,
+	}
 })
 </script>
 
@@ -35,7 +47,7 @@ export default
 	{
 		/**
 		 * @description Process form submission
-		 * @memberof ConfView
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
 		 * @return {false}
 		 */
 		submit()
@@ -51,7 +63,35 @@ export default
 
 			this.$root.connectMqtt()
 			return false
-		}
+		},
+
+
+		/**
+		 * @description Populate form
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {false}
+		 */
+		updateForm()
+		{
+			host.value = this.$root.host
+			port.value = this.$root.port
+			username.value = this.$root.username
+			password.value = this.$root.password
+			device.value = this.$root.device
+			prefix.value = this.$root.prefix
+			suffix.value = this.$root.suffix
+			ssl.checked = this.$root.ssl
+		},
+	},
+
+
+	/**
+	 * @description On load
+	 * @returns {void}
+	 */
+	mounted()
+	{
+		this.updateForm()
 	},
 }
 </script>
@@ -64,7 +104,7 @@ export default
 		<div bp="grid">
 			<div bp="12 9@lg">
 				<label for="host">Host: IP address or hostname of your broker's websocket</label>
-				<input type="text" name="host" v-model="host" id="host" placeholder="192.168.1.123 or oxrs.local" />
+				<input type="text" name="host" v-model="host" id="host" placeholder="192.168.1.123, localhost, xyz.com" />
 			</div>
 
 			<div bp="12 3@lg">
@@ -86,7 +126,7 @@ export default
 		</div>
 
 		<label for="device">Client ID:</label>
-		<input type="text" name="device" v-model="device" id="device" placeholder="TpEsp32" />
+		<input type="text" name="device" v-model="device" id="device" placeholder="TouchPanelWeb" />
 
 		<div bp="grid">
 			<div bp="12 6@lg">
