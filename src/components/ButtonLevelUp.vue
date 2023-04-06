@@ -12,6 +12,7 @@ export default
 {
 	/**
 	 * @description Prep timer ready for hold events
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
 	 * @return {Object}
 	 */
 	data()
@@ -225,19 +226,47 @@ export default
 
 <template>
 <div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.type} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" :style="cssVars" ref="tileheight">
-	<div class="level" :style="{ height: tile.levelPercent + '%' }"></div>
+
 	<div class="image"></div>
-	<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+
+	<div class="level" :style="{ height: tile.levelPercent + '%' }"></div>
+
+	<template v-if="tile.icon">
+		<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+	</template>
+
 	<div bp="12" class="label">
 		{{ tile.label }}
 		<template v-if="tile.subLabel">
 			<br><span>{{ tile.subLabel }}</span>
 		</template>
 	</div>
+
 	<div class="buttons">
-		<button @mousedown="mouseDown('button')" @mouseup="mouseUp('button')" @mouseout="mouseUp('button')" @touchstart.prevent="mouseDown('button')" @touchend.prevent="mouseUp('button')" v-bind:disabled="!tile.enabled"></button>
-		<button @mousedown="mouseDown('up')" @mouseup="mouseUp('up')" @mouseout="mouseUp('up')" @touchstart.prevent="mouseDown('up')" @touchend.prevent="mouseUp('up')" class="icon--mask icon-_up" v-bind:disabled="!tile.enabled"></button>
-		<button @mousedown="mouseDown('down')" @mouseup="mouseUp('down')" @mouseout="mouseUp('down')" @touchstart.prevent="mouseDown('down')" @touchend.prevent="mouseUp('down')" class="icon--mask icon-_down" v-bind:disabled="!tile.enabled"></button>
+		<button @mousedown="mouseDown('button')"
+			@mouseup="mouseUp('button')"
+			@mouseout="mouseUp('button')"
+			@touchstart.prevent="mouseDown('button')"
+			@touchend.prevent="mouseUp('button')"
+			v-bind:disabled="!tile.enabled"></button>
+
+		<button
+			@mousedown="mouseDown('up')"
+			@mouseup="mouseUp('up')"
+			@mouseout="mouseUp('up')"
+			@touchstart.prevent="mouseDown('up')"
+			@touchend.prevent="mouseUp('up')"
+			class="icon--mask icon-_up"
+			v-bind:disabled="!tile.enabled"></button>
+
+		<button
+			@mousedown="mouseDown('down')"
+			@mouseup="mouseUp('down')"
+			@mouseout="mouseUp('down')"
+			@touchstart.prevent="mouseDown('down')"
+			@touchend.prevent="mouseUp('down')"
+			class="icon--mask icon-_down"
+			v-bind:disabled="!tile.enabled"></button>
 	</div>
 </div>
 

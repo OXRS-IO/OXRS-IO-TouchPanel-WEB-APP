@@ -87,21 +87,27 @@ export default
 }
 </script>
 
+
 <template>
 <div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.type} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" ref="tileheight">
+
 	<div class="image"></div>
+
 	<div bp="12" class="indicator">
 		<h1>{{ tile.value }}<sup>{{ tile.units }}</sup></h1>
 		<h2>{{ tile.subValue }}<sup>{{ tile.subUnits }}</sup></h2>
 	</div>
+
 	<div bp="12" class="label">
 		{{ tile.label }}
 		<template v-if="tile.subLabel">
 			<br><span>{{ tile.subLabel }}</span>
 		</template>
 	</div>
+
 </div>
 </template>
+
 
 <style scoped>
 .tile .indicator h1,

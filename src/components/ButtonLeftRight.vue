@@ -199,21 +199,48 @@ export default
 }
 </script>
 
+
 <template>
 <div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.type} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" :style="cssVars" ref="tileheight">
+
 	<div class="image"></div>
-	<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+
+	<template v-if="tile.icon">
+		<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+	</template>
+
 	<div bp="12" class="label">
 		{{ tile.label }}
 		<template v-if="tile.subLabel">
 			<br><span>{{ tile.subLabel }}</span>
 		</template>
 	</div>
+
 	<div class="buttons">
-		<button @mousedown="mouseDown('button')" @mouseup="mouseUp('button')" @mouseout="mouseUp('button')" @touchstart.prevent="mouseDown('button')" @touchend.prevent="mouseUp('button')"  v-bind:disabled="!tile.enabled"></button>
-		<button @mousedown="mouseDown('left')" @mouseup="mouseUp('left')" @mouseout="mouseUp('left')" @touchstart.prevent="mouseDown('left')" @touchend.prevent="mouseUp('left')"  class="icon--mask icon-_left"  v-bind:disabled="!tile.enabled"></button>
-		<button @mousedown="mouseDown('right')" @mouseup="mouseUp('right')" @mouseout="mouseUp('right')" @touchstart.prevent="mouseDown('right')" @touchend.prevent="mouseUp('right')"  class="icon--mask icon-_right"  v-bind:disabled="!tile.enabled"></button>
+		<button @mousedown="mouseDown('button')"
+			@mouseup="mouseUp('button')"
+			@mouseout="mouseUp('button')"
+			@touchstart.prevent="mouseDown('button')"
+			@touchend.prevent="mouseUp('button')"
+			v-bind:disabled="!tile.enabled"></button>
+
+		<button @mousedown="mouseDown('left')"
+			@mouseup="mouseUp('left')"
+			@mouseout="mouseUp('left')"
+			@touchstart.prevent="mouseDown('left')"
+			@touchend.prevent="mouseUp('left')"
+			class="icon--mask icon-_left"
+			v-bind:disabled="!tile.enabled"></button>
+
+		<button @mousedown="mouseDown('right')"
+			@mouseup="mouseUp('right')"
+			@mouseout="mouseUp('right')"
+			@touchstart.prevent="mouseDown('right')"
+			@touchend.prevent="mouseUp('right')"
+			class="icon--mask icon-_right"
+			v-bind:disabled="!tile.enabled"></button>
 	</div>
+
 </div>
 </template>
 

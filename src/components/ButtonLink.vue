@@ -106,19 +106,27 @@ export default
 
 <template>
 <div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.type} enabled-${tile.enabled}`" v-bind:id="tile.id" :style="cssVars" ref="tileheight">
+
 	<div class="image"></div>
-	<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+
+	<template v-if="tile.icon">
+		<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+	</template>
+
 	<div bp="12" class="label">
 		{{ tile.label }}
 		<template v-if="tile.subLabel">
 			<br><span>{{ tile.subLabel }}</span>
 		</template>
 	</div>
+
 	<div class="buttons">
 		<button @click="press" class="icon--mask icon-_right" v-bind:disabled="!tile.enabled"></button>
 	</div>
+
 </div>
 </template>
+
 
 <style scoped>
 .tile.state-on .icon

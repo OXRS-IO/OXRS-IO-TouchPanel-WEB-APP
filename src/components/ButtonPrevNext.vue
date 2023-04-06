@@ -201,21 +201,51 @@ export default
 
 <template>
 <div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.type} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" :style="cssVars" ref="tileheight">
+
 	<div class="image"></div>
-	<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+
+	<template v-if="tile.icon">
+		<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
+	</template>
+
 	<div bp="12" class="label">
 		{{ tile.label }}
 		<template v-if="tile.subLabel">
 			<br><span>{{ tile.subLabel }}</span>
 		</template>
 	</div>
+
 	<div class="buttons">
-		<button @mousedown="mouseDown('button')" @mouseup="mouseUp('button')" @mouseout="mouseUp('button')" @touchstart.prevent="mouseDown('button')" @touchend.prevent="mouseUp('button')" v-bind:disabled="!tile.enabled"></button>
-		<button @mousedown="mouseDown('prev')" @mouseup="mouseUp('prev')" @mouseout="mouseUp('prev')" @touchstart.prevent="mouseDown('up')" @touchend.prevent="mouseUp('up')" class="icon--mask icon-_prev" v-bind:disabled="!tile.enabled"></button>
-		<button @mousedown="mouseDown('next')" @mouseup="mouseUp('next')" @mouseout="mouseUp('next')" @touchstart.prevent="mouseDown('down')" @touchend.prevent="mouseUp('down')" class="icon--mask icon-_next" v-bind:disabled="!tile.enabled"></button>
+		<button
+			@mousedown="mouseDown('button')"
+			@mouseup="mouseUp('button')"
+			@mouseout="mouseUp('button')"
+			@touchstart.prevent="mouseDown('button')"
+			@touchend.prevent="mouseUp('button')"
+			v-bind:disabled="!tile.enabled"></button>
+
+		<button
+			@mousedown="mouseDown('prev')"
+			@mouseup="mouseUp('prev')"
+			@mouseout="mouseUp('prev')"
+			@touchstart.prevent="mouseDown('up')"
+			@touchend.prevent="mouseUp('up')"
+			class="icon--mask icon-_prev"
+			v-bind:disabled="!tile.enabled"></button>
+
+		<button
+			@mousedown="mouseDown('next')"
+			@mouseup="mouseUp('next')"
+			@mouseout="mouseUp('next')"
+			@touchstart.prevent="mouseDown('down')"
+			@touchend.prevent="mouseUp('down')"
+			class="icon--mask icon-_next"
+			v-bind:disabled="!tile.enabled"></button>
 	</div>
+
 </div>
 </template>
+
 
 <style scoped>
 .tile.state-on .icon
