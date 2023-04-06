@@ -33,13 +33,13 @@ defineProps({
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	border-collapse: collapse;
-	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 button
 {
 	all: unset;
-	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 	margin: 0;
 	padding: 0;
 	outline: none;
@@ -124,7 +124,6 @@ footer h2:nth-child(3)
 .tile
 {
 	background-color: rgba(255,255,255,0.1);
-	transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 	-webkit-backdrop-filter: saturate(180%) blur(20px);
 	backdrop-filter: saturate(180%) blur(20px);
 	aspect-ratio: 1 / 1;

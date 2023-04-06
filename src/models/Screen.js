@@ -51,6 +51,7 @@ class Screen
 					break
 
 				// Populate footer text
+				// (#[a-fA-F0-9]+)
 				case 'footer':
 					if (typeof data[key] != 'object') data[key] = {}
 
