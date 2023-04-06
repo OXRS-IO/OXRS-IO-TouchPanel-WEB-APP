@@ -119,6 +119,14 @@ export default
 		{
 			this.interval = 200
 			this.hold(type)
+
+			if (type != 'button') return
+
+			// Only fire `hold` event once
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = 'bounce-animation'
 		},
 
 

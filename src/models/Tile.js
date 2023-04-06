@@ -27,7 +27,7 @@ class Tile
 	subUnits = null
 	enabled = true
 	iconColorRgb = {r: 91, g: 190, b: 91}
-
+	backgroundImage = {imageBase64: null, zoom: 0, angle: 0, offset: [0,0]}
 
 
 	/**
@@ -80,6 +80,15 @@ class Tile
 					this.iconColorRgb.b = (('b' in data[key]) && !isNaN(data[key]['b'])) ? data[key]['b'] : 91
 					break;
 
+				// Background image
+				case 'backgroundImage':
+					if (typeof data[key] != "object") data[key] = {}
+
+					this.backgroundImage.imageBase64 = ('imageBase64' in data[key]) ? (this.detectMimeType(data[key]['imageBase64']) ? `${this.detectMimeType(data[key]['imageBase64'])}${data[key]['imageBase64']}` : null) : null
+					this.backgroundImage.zoom = (('zoom' in data[key]) && !isNaN(data[key]['zoom'])) ? data[key]['zoom'] : 0
+					this.backgroundImage.angle = (('angle' in data[key]) && !isNaN(data[key]['angle'])) ? data[key]['angle'] : 0
+					this.backgroundImage.offset = ('offset' in data[key]) ? [parseInt(data[key]['offset'][0]), parseInt(data[key]['offset'][1])] : [0,0]
+
 				// All other properties
 				default:
 					this[key] = data[key]
@@ -89,6 +98,30 @@ class Tile
 		// Calculate percent between given range
 		this.levelPercent = Math.round(((this.level - this.levelStart) / (this.levelStop - this.levelStart)) * 100)
 		this.levelPercentStep = Math.round((this.levelStop - this.levelStart) / 20)
+	}
+
+
+	/**
+	 * @description Determine mime type from base64 encoded string
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @param {string} base64
+	 */
+	detectMimeType(base64)
+	{
+		const signatures = {
+			'R0lGOD': 'data:image/gif;base64,',
+			'iVBORw0KGgo': 'data:image/png;base64,',
+			'/9j/': 'data:image/jpg;base64,',
+			'PHN2Zy': 'data:image/svg+xml;base64,',
+			'Qk0=': 'data:image/bmp;base64,',
+		}
+
+		for (let s in signatures)
+		{
+			if (String(base64).indexOf(s) === 0) return signatures[s];
+		}
+
+		return false;
 	}
 }
 

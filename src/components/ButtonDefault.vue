@@ -115,8 +115,13 @@ export default
 		 */
 		mouseHold()
 		{
-			this.interval = 200
 			this.hold()
+
+			// Only fire `hold` event once
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = 'bounce-animation'
 		},
 
 

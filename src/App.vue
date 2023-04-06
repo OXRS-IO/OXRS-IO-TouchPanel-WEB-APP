@@ -494,7 +494,7 @@ export default
 				'iVBORw0KGgo': 'data:image/png;base64,',
 				'/9j/': 'data:image/jpg;base64,',
 				'PHN2Zy': 'data:image/svg+xml;base64,',
-				'Qk0=': 'data:image/bmp;base64',
+				'Qk0=': 'data:image/bmp;base64,',
 			}
 
 			for (let s in signatures)
