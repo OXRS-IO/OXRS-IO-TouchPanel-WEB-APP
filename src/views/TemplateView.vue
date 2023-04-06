@@ -63,7 +63,13 @@ body
 
 footer
 {
-	margin-top: 2em;
+	background-color: rgba(255,255,255,0.1);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+	width: 100%;
+	position: fixed;
+	left: 0;
+	bottom: 0;
 }
 
 a:link,
