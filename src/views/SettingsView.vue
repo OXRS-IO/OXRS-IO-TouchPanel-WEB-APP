@@ -1,3 +1,103 @@
 <script setup>
-console.log('Settings')
+
 </script>
+
+
+
+
+<template>
+	<div class="colour-wheel">
+		<div class="rainbow"></div>
+			<div class="white"></div>
+	</div>
+</template>
+
+<style>
+.colour-wheel
+{
+	position: relative;
+	width: 50em;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	overflow: hidden
+}
+
+.rainbow
+{
+	background:
+		radial-gradient(circle at 50% 0,
+			red,
+			rgba(242,13,13,.8) 10%,
+			rgba(230,26,26,.6) 20%,
+			rgba(204,51,51,.4) 30%,
+			rgba(166,89,89,.2) 40%,
+			hsla(0, 0%, 100%, 0) 50%),
+		radial-gradient(circle at 85.35533905932738%
+			14.644660940672622%,
+			#ffbf00,
+			rgba(242,185,13,.8) 10%,
+			rgba(230,179,26,.6) 20%,
+			rgba(204,166,51,.4) 30%,
+			rgba(166,147,89,.2) 40%,
+			hsla(0, 0%, 100%, 0) 50%),
+		radial-gradient(circle at 100% 50%,
+			#80ff00,
+			rgba(128,242,13,.8) 10%,
+			rgba(128,230,26,.6) 20%,
+			rgba(128,204,51,.4) 30%,
+			rgba(128,166,89,.2) 40%,
+			hsla(90,0%,50%,0) 50%),
+		radial-gradient(circle at 85.35533905932738%
+			85.35533905932738%,
+			#00ff40,
+			rgba(13,242,70,.8) 10%,
+			rgba(26,230,77,.6) 20%,
+			rgba(51,204,89,.4) 30%,
+			rgba(89,166,108,.2) 40%,
+			hsla(135,0%,50%,0) 50%),
+		radial-gradient(circle at 50.00000000000001% 100%,
+			#0ff,rgba(13,242,242,.8) 10%,
+			rgba(26,230,230,.6) 20%,
+			rgba(51,204,204,.4) 30%,
+			rgba(89,166,166,.2) 40%,
+			hsla(180,0%,50%,0) 50%),
+		radial-gradient(circle at 14.64466094067263%
+			85.35533905932738%,
+			#0040ff,
+			rgba(13,70,242,.8) 10%,
+			rgba(26,77,230,.6) 20%,
+			rgba(51,89,204,.4) 30%,
+			rgba(89,108,166,.2) 40%,
+			hsla(225,0%,50%,0) 50%),
+		radial-gradient(circle at 0 50.00000000000001%,
+			#7f00ff,rgba(128,13,242,.8) 10%,
+			rgba(128,26,230,.6) 20%,
+			rgba(128,51,204,.4) 30%,
+			rgba(128,89,166,.2) 40%,
+			hsla(270,0%,50%,0) 50%),
+		radial-gradient(circle at 14.644660940672615%
+			14.64466094067263%,
+			#ff00bf,
+			rgba(242,13,185,.8) 10%,
+			rgba(230,26,179,.6) 20%,
+			rgba(204,51,166,.4) 30%,
+			rgba(166,89,147,.2) 40%,
+			hsla(315,0%,50%,0) 50%);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transform: rotate(90deg);
+}
+
+.white
+{
+	background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 60%);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+</style>

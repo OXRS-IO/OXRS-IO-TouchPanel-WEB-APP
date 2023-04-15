@@ -13,12 +13,10 @@ defineProps({
 </script>
 
 <template>
-	<main>
-		<HomeView v-if="bodyView == 'home'"></HomeView>
-		<ConfView v-if="bodyView == 'config'"></ConfView>
-		<ScreenView v-if="bodyView == 'screen'"></ScreenView>
-		<SettingsView v-if="bodyView == 'settings'"></SettingsView>
-	</main>
+	<HomeView v-if="bodyView == 'home'"></HomeView>
+	<ConfView v-if="bodyView == 'config'"></ConfView>
+	<ScreenView v-if="bodyView == 'screen'"></ScreenView>
+	<SettingsView v-if="bodyView == 'settings'"></SettingsView>
 </template>
 
 
@@ -70,6 +68,12 @@ footer
 	position: fixed;
 	left: 0;
 	bottom: 0;
+}
+
+.footer-pad
+{
+	padding: 1rem;
+	font-size: 2rem;
 }
 
 a:link,
@@ -204,7 +208,6 @@ footer h2:nth-child(3)
 .tile.state-on .label
 {
 	color: #000;
-	text-shadow: 0px 0px 2px white;
 }
 
 .tile .label span

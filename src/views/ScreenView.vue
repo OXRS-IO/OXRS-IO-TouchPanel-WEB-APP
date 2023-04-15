@@ -134,7 +134,7 @@ export default
 
 
 <template>
-	<div bp="grid 6 4@sm 3@md 2@xl" :style="cssVars">
+	<main bp="grid 6 4@sm 3@md 2@xl" :style="cssVars">
 		<template v-for="(tile, index) in tiles" :key="index">
 			<template v-if="tile">
 				<ButtonDefault v-if="tile.style == 'button'" :tile="tile"></ButtonDefault>
@@ -148,7 +148,9 @@ export default
 				<ButtonLink v-if="tile.style == 'link'" :tile="tile"></ButtonLink>
 			</template>
 		</template>
-	</div>
+	</main>
+
+	<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 
 	<footer bp="grid 4">
 		<template v-if="screen.footer.left">
@@ -187,7 +189,7 @@ footer button
 	display: block;
 	overflow: hidden;
 	-webkit-mask-size: 10%;
-    mask-size: 10%;
+	mask-size: 10%;
 	border-radius: 1rem;
 	font-size: 2rem;
 	color: #fff;

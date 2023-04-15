@@ -243,7 +243,7 @@ export default
 		<div bp="4" :class="`icon icon--mask icon-${tile.icon}`" ref="iconheight"></div>
 	</template>
 
-	<div bp="12" class="label">
+	<div bp="12" :class="tile.levelPercent <= 10 ? 'label invert' : 'label'">
 		{{ tile.label }}
 		<template v-if="tile.subLabel">
 			<br><span>{{ tile.subLabel }}</span>
@@ -340,7 +340,7 @@ export default
 
 .tile.state-on
 {
-	background-color: rgba(255,255,255,0.1);
+	background-color: rgba(255,255,255,0.2);
 }
 .tile.state-on .buttons button:nth-child(2),
 .tile.state-on .buttons button:nth-child(3)
