@@ -22,7 +22,7 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/screen/:id',
+			path: '/screen/:screen',
 			name: 'Screen',
 			component: Template,
 			props: {
@@ -30,11 +30,11 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/screen/:id/tile/:tile/settings',
-			name: 'Settings',
+			path: '/screen/:screen/tile/:tile/controls',
+			name: 'Controls',
 			component: Template,
 			props: {
-				bodyView: 'settings',
+				bodyView: 'controls',
 			}
 		}
 	]

@@ -12,6 +12,7 @@ export default
 {
 	/**
 	 * @description Prep timer ready for hold events
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
 	 * @return {Object}
 	 */
 	data()
@@ -49,25 +50,23 @@ export default
 		/**
 		 * @description Mouse down event handler
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
-		mouseDown(type)
+		mouseDown()
 		{
 			if (!this.tile.enabled) return
 
 			this.animation = 'press-animation'
-			this.timer = setInterval(this.mouseHold, this.interval, type)
+			this.timer = setInterval(this.mouseHold, this.interval)
 		},
 
 
 		/**
 		 * @description Mouse up event handler
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
-		mouseUp(type)
+		mouseUp()
 		{
 			if (!this.timer) return
 
@@ -76,7 +75,7 @@ export default
 
 			if (this.interval == 500)
 			{
-				this.press(type)
+				this.press()
 			}
 			else
 			{
@@ -90,15 +89,11 @@ export default
 		/**
 		 * @description Mouse hold event handler
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
-		mouseHold(type)
+		mouseHold()
 		{
-			this.interval = 200
-			this.hold(type)
-
-			if (type != 'button') return
+			this.hold()
 
 			// Only fire `hold` event once
 			clearInterval(this.timer)
@@ -111,52 +106,30 @@ export default
 		/**
 		 * @description Send press event from Tile
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
-		press(type)
+		press()
 		{
-			let payload = {}
-			payload.screen = this.tile.screen
-			payload.tile = this.tile.id
-			payload.style = this.tile.style
-			payload.type = type
-			payload.event = 'single'
-
-			switch (type)
-			{
-				case "button":
-					payload.state = this.tile.state
-					break;
-			}
-
-			this.$root.mqttSend(payload);
+			this.$root.navigateToUrl(`/screen/${this.tile.screen}/tile/${this.tile.id}/controls`)
 		},
 
 
 		/**
 		 * @description Send hold event from Tile
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
-		hold(type)
+		hold()
 		{
-			let payload = {}
+			let payload = {};
 			payload.screen = this.tile.screen
 			payload.tile = this.tile.id
 			payload.style = this.tile.style
-			payload.type = type
+			payload.type = 'button'
+			payload.state = this.tile.state
 			payload.event = 'hold'
 
-			switch (type)
-			{
-				case "button":
-					payload.state = this.tile.state
-					break;
-			}
-
-			this.$root.mqttSend(payload);
+			this.$root.mqttSend(payload)
 		},
 
 
@@ -169,7 +142,7 @@ export default
 		{
 			this.tile_height = this.$refs.tileheight.clientWidth
 			this.icon_height = this.$refs.iconheight.clientWidth
-		},
+		}
 	},
 
 
@@ -214,30 +187,11 @@ export default
 	</div>
 
 	<div class="buttons">
-		<button
-			@mousedown="mouseDown('button')"
-			@mouseup="mouseUp('button')"
-			@mouseout="mouseUp('button')"
-			@touchstart.prevent="mouseDown('button')"
-			@touchend.prevent="mouseUp('button')"
-			v-bind:disabled="!tile.enabled"></button>
-
-		<button
-			@mousedown="mouseDown('up')"
-			@mouseup="mouseUp('up')"
-			@mouseout="mouseUp('up')"
-			@touchstart.prevent="mouseDown('up')"
-			@touchend.prevent="mouseUp('up')"
-			class="icon--mask icon-_up"
-			v-bind:disabled="!tile.enabled"></button>
-
-		<button
-			@mousedown="mouseDown('down')"
-			@mouseup="mouseUp('down')"
-			@mouseout="mouseUp('down')"
-			@touchstart.prevent="mouseDown('down')"
-			@touchend.prevent="mouseUp('down')"
-			class="icon--mask icon-_down"
+		<button @mousedown="mouseDown"
+			@mouseup="mouseUp"
+			@mouseout="mouseUp"
+			@touchstart.prevent="mouseDown"
+			@touchend.prevent="mouseUp"
 			v-bind:disabled="!tile.enabled"></button>
 	</div>
 
@@ -252,47 +206,7 @@ export default
 .buttons button:nth-child(1)
 {
 	position: absolute;
-	width: 50%;
+	width: 100%;
 	height: 100%;
-
-}
-
-.buttons button:nth-child(2)
-{
-	background-color: #fff;
-	position: absolute;
-	width: 50%;
-	height: 50%;
-	top: 0;
-	right: 0;
-	-webkit-mask-size: 50%;
-	mask-size: 50%;
-	-webkit-mask-position: 65% 50%;
-	mask-position:  65% 50%;
-}
-
-.buttons button:nth-child(3)
-{
-	background-color: #fff;
-	position: absolute;
-	width: 50%;
-	height: 50%;
-	bottom: 0;
-	right: 0;
-	-webkit-mask-size: 50%;
-	mask-size: 50%;
-	-webkit-mask-position: 65% 50%;
-	mask-position: 65% 50%;
-}
-
-.tile.state-on .buttons button:nth-child(2),
-.tile.state-on .buttons button:nth-child(3)
-{
-	background-color: var(--icon-color);
-}
-.tile.enabled-false .buttons button:nth-child(2),
-.tile.enabled-false .buttons button:nth-child(3)
-{
-	background-color: rgba(0,0,0,0.3) !important;
 }
 </style>

@@ -3,7 +3,6 @@ import Paho from 'paho-mqtt'
 import router from './router'
 import Screen from '@/models/Screen'
 import CryptoJS from 'crypto-js/crypto-js'
-import { conditionalExpression } from '@babel/types';
 </script>
 
 <script>
@@ -134,6 +133,7 @@ export default
 		mqttOnDisconnect(error)
 		{
 			console.log(error)
+			router.push('/config')
 		},
 
 

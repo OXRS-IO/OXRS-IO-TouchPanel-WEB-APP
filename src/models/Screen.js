@@ -1,5 +1,6 @@
 import Tile from '@/models/Tile'
 
+
 class Screen
 {
 	id = null
@@ -166,5 +167,6 @@ class Screen
 		document.querySelector('body').setAttribute('style', `background-color: rgb(${this.backgroundColorRgb.r}, ${this.backgroundColorRgb.g}, ${this.backgroundColorRgb.b})`)
 	}
 }
+
 
 export default Screen

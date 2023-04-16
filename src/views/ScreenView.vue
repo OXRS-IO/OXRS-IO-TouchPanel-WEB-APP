@@ -7,6 +7,7 @@ import ButtonLeftRight from '@/components/ButtonLeftRight.vue'
 import ButtonPrevNext from '@/components/ButtonPrevNext.vue'
 import ButtonLink from '@/components/ButtonLink.vue'
 import ButtonIndicator from '@/components/ButtonIndicator.vue'
+import ButtonPickerRgb from '@/components/ButtonPickerRgb.vue'
 </script>
 
 
@@ -33,7 +34,7 @@ export default
 		)
 
 		this.$watch(
-			() => this.$root.screens[this.$route.params.id],
+			() => this.$root.screens[this.$route.params.screen],
 			() =>
 			{
 				this.fetchTiles()
@@ -74,7 +75,7 @@ export default
 		 */
 		fetchTiles()
 		{
-			let screen = this.$root.getScreen(this.$route.params.id);
+			let screen = this.$root.getScreen(this.$route.params.screen);
 			if (screen) this.tiles = screen.tiles
 		},
 
@@ -86,7 +87,7 @@ export default
 		 */
 		updateScreen()
 		{
-			let screen = this.$root.getScreen(this.$route.params.id);
+			let screen = this.$root.getScreen(this.$route.params.screen);
 			if (!screen) return
 			this.screen = screen
 
@@ -138,7 +139,7 @@ export default
 		<template v-for="(tile, index) in tiles" :key="index">
 			<template v-if="tile">
 				<ButtonDefault v-if="tile.style == 'button'" :tile="tile"></ButtonDefault>
-				<buttonUpDown v-if="tile.style == 'buttonUpDown'" :tile="tile"></buttonUpDown>
+				<ButtonUpDown v-if="tile.style == 'buttonUpDown'" :tile="tile"></ButtonUpDown>
 				<ButtonLevelUp v-if="tile.style == 'buttonLevelUp'" :tile="tile"></ButtonLevelUp>
 				<ButtonLevelDown v-if="tile.style == 'buttonLevelDown'" :tile="tile"></ButtonLevelDown>
 				<ButtonLeftRight v-if="tile.style == 'buttonLeftRight'" :tile="tile"></ButtonLeftRight>
@@ -146,6 +147,7 @@ export default
 				<ButtonIndicator v-if="tile.style == 'indicator'" :tile="tile"></ButtonIndicator>
 				<ButtonDefault v-if="tile.style == 'dropDown'" :tile="tile"></ButtonDefault>
 				<ButtonLink v-if="tile.style == 'link'" :tile="tile"></ButtonLink>
+				<ButtonPickerRgb v-if="tile.style == 'colorPickerRgb'" :tile="tile"></ButtonPickerRgb>
 			</template>
 		</template>
 	</main>
@@ -176,51 +178,3 @@ export default
 
 	</footer>
 </template>
-
-<style scoped>
-footer h2
-{
-	padding: 1rem;
-}
-footer button
-{
-	padding: 1rem;
-	width: 100%;
-	display: block;
-	overflow: hidden;
-	-webkit-mask-size: 10%;
-	mask-size: 10%;
-	border-radius: 1rem;
-	font-size: 2rem;
-	color: #fff;
-}
-footer button:hover,
-footer button:active,
-footer button:focus
-{
-	background-color: rgba(255,255,255,0.1);
-	-webkit-backdrop-filter: saturate(180%) blur(20px);
-	backdrop-filter: saturate(180%) blur(20px);
-}
-footer button.icon--before:before
-{
-	background-color: rgba(255,255,255,0.6);
-}
-footer button:hover.icon--before:before
-{
-	background-color: rgba(255,255,255,1);
-}
-
-footer button:nth-child(1)
-{
-	text-align: left;
-}
-footer button:nth-child(2)
-{
-	text-align: center;
-}
-footer button:nth-child(3)
-{
-	text-align: right;
-}
-</style>

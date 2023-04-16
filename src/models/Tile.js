@@ -12,7 +12,7 @@ class Tile
 	levelPercent = 0
 	levelPercentStep = 0
 	level = 0
-	colorRgb = []
+	colorRgb = {r: 255, g: 255, b: 255}
 	bgImage = []
 	dropDownList = []
 	dropDownSelect = null
@@ -124,5 +124,6 @@ class Tile
 		return false;
 	}
 }
+
 
 export default Tile

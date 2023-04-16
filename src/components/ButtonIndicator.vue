@@ -22,28 +22,6 @@ export default
 	},
 
 
-	/**
-	 * @description Add/Remove window resize event handler
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
-	 * @return {void}
-	 */
-	created()
-	{
-		window.addEventListener("resize", this.resizeHandler);
-	},
-
-
-	/**
-	 * @description Add/Remove window resize event handler
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
-	 * @return {void}
-	 */
-	destroyed()
-	{
-		window.removeEventListener("resize", this.resizeHandler);
-	},
-
-
 	computed:
 	{
 		/**
@@ -82,7 +60,19 @@ export default
 	 */
 	mounted()
 	{
+		window.addEventListener("resize", this.resizeHandler)
 		this.resizeHandler()
+	},
+
+
+	/**
+	 * @description Called when view is unloaded
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @return {void}
+	 */
+	 unmounted()
+	{
+		window.removeEventListener("resize", this.resizeHandler)
 	},
 }
 </script>
