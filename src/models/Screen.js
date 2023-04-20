@@ -3,6 +3,7 @@ import Tile from '@/models/Tile'
 
 class Screen
 {
+	_app = null
 	id = null
 	label = null
 	hidden = false
@@ -19,10 +20,12 @@ class Screen
 	 * @description Initialise Screen
 	 * @memberof OXRS-IO-TouchPanel-WEB-APP
 	 * @param {Object} data Collection of screen properties
+	 * @param {Object} App instance
 	 * @returns {Screen}
 	 */
-	constructor(data)
+	constructor(data, app)
 	{
+		this._app = app;
 		this.update(data)
 	}
 
@@ -67,7 +70,7 @@ class Screen
 					this.backgroundColorRgb.g = (('g' in data[key]) && !isNaN(data[key]['g'])) ? data[key]['g'] : 0
 					this.backgroundColorRgb.b = (('b' in data[key]) && !isNaN(data[key]['b'])) ? data[key]['b'] : 0
 
-					this.applyBgColor()
+					this._app.setBgColour(this.backgroundColorRgb)
 					break;
 
 				// All other screen properties
@@ -110,7 +113,7 @@ class Screen
 	addTile(tile)
 	{
 		tile.screen = this.id
-		this.tiles.push(new Tile(tile))
+		this.tiles.push(new Tile(tile, this._app))
 	}
 
 
@@ -153,18 +156,6 @@ class Screen
 				this.addTile(list[idx])
 			}
 		}
-	}
-
-
-	/**
-	 * @description Apply background color
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
-	 * @param {Vue} app Vue app instance
-	 * @returns {Array}
-	 */
-	applyBgColor()
-	{
-		document.querySelector('body').setAttribute('style', `background-color: rgb(${this.backgroundColorRgb.r}, ${this.backgroundColorRgb.g}, ${this.backgroundColorRgb.b})`)
 	}
 }
 

@@ -42,6 +42,8 @@ export default
 			let prefix = this.prefix ? `${this.prefix}/` : ''
 			let suffix = this.suffix ? `/${this.suffix}` : ''
 
+			if (this.mqtt) this.mqtt.disconnect()
+
 			this.mqtt = new Paho.Client(this.host, Number(this.port), this.device)
 			this.mqtt.onConnectionLost = this.mqttOnDisconnect
 			this.mqtt.onMessageArrived = this.mqttOnReceive
@@ -67,7 +69,7 @@ export default
 			catch (err)
 			{
 				alert(err);
-				router.push('/config')
+				this.navigateToUrl('/config')
 			}
 		},
 
@@ -109,12 +111,12 @@ export default
 				if (params.get('screen') != null)
 				{
 					// Redirect to given screen
-					this.navigateToScreen(params.get('screen'))
+					this.navigateToUrl(`/screen/${params.get('screen')}`)
 				}
 				else
 				{
 					// Redirect to `home page`
-					router.push(`/`)
+					this.navigateToUrl('/')
 				}
 			}
 			catch (error)
@@ -133,7 +135,11 @@ export default
 		mqttOnDisconnect(error)
 		{
 			console.log(error)
-			router.push('/config')
+
+			if (error.errorCode == 0) return
+
+			this.mqtt = null
+			this.navigateToUrl('/config')
 		},
 
 
@@ -265,7 +271,7 @@ export default
 			if ('iconOnColorRgb' in data) this.updateIconColors(data.iconOnColorRgb)
 
 			// Navigate to screen
-			if ('screen' in data) this.navigateToScreen(data.screen.load)
+			if ('screen' in data) this.navigateToUrl(`/screen/${data.screen.load}`)
 
 			// Show msg
 			if ('message' in data) alert(`${data.message.title}\n${data.message.text}`)
@@ -293,7 +299,7 @@ export default
 				}
 				else
 				{
-					this.screens.push(new Screen(list[idx]))
+					this.screens.push(new Screen(list[idx], this))
 				}
 			}
 		},
@@ -417,33 +423,6 @@ export default
 
 
 		/**
-		 * @description Navigate to given screen
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {Number} id Screen ID
-		 * @return {void}
-		 */
-		navigateToScreen(id)
-		{
-			// Validation
-			id = parseInt(id)
-			if (isNaN(id)) return
-
-			// Redirect browser
-			router.push(`/screen/${id}`)
-
-			// Send `change` event to broker
-			let payload = {
-				screen: id,
-				type: 'screen',
-				event: 'change',
-				state: 'loaded',
-			}
-
-			this.mqttSend(payload)
-		},
-
-
-		/**
 		 * @description Navigate to given URL
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
 		 * @param {string} url
@@ -478,6 +457,64 @@ export default
 		decrypt(str, key)
 		{
 			return CryptoJS.AES.decrypt(str, key).toString(CryptoJS.enc.Utf8)
+		},
+
+
+		/**
+		 * @description Toggle fullscreen
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {void}
+		 */
+		toggleFullscreen()
+		{
+			let bod = document.querySelector('body')
+
+			if (document.fullscreenElement === null || document.webkitFullscreenElement === null)
+			{
+				if (bod.requestFullscreen)
+				{
+
+					bod.requestFullscreen().catch((error) =>
+					{
+						console.log(error)
+					})
+				}
+				else if (bod.webkitRequestFullScreen)
+				{
+
+					bod.webkitRequestFullScreen().catch((error) =>
+					{
+						console.log(error)
+					})
+				}
+			}
+			else
+			{
+				if (document.exitFullscreen)
+				{
+					document.exitFullscreen()
+				}
+				else if (document.webkitCancelFullScreen)
+				{
+					document.webkitCancelFullScreen()
+				}
+			}
+		},
+
+
+		/**
+		 * @description Set body background colour
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {void}
+		 */
+		setBgColour(data)
+		{
+			if (typeof data != "object") return
+			if (!('r' in data)) return
+			if (!('g' in data)) return
+			if (!('b' in data)) return
+
+			document.querySelector('body').setAttribute('style', `background-color: rgb(${data.r}, ${data.g}, ${data.b})`)
 		},
 
 
@@ -521,7 +558,7 @@ export default
 			this.connectMqtt()
 		} else {
 			// Redirect browser to config screen
-			router.push('/config')
+			this.navigateToUrl('/config')
 		}
 	}
 

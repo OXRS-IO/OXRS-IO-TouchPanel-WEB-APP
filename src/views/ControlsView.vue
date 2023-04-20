@@ -28,7 +28,7 @@ export default
 		this.screen = this.$root.getScreen(this.$route.params.screen)
 		this.tile = this.screen.getTile(this.$route.params.tile)
 
-		document.querySelector('body').setAttribute('style', `background-color: rgb(0, 0, 0)`)
+		this.$root.setBgColour({r: 0, g: 0, b: 0})
 	},
 }
 </script>

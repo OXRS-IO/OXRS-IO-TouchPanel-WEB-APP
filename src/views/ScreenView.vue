@@ -54,6 +54,7 @@ export default
 	data()
 	{
 		return {
+			footer_width: null,
 			tiles: [],
 			screen: {
 				footer: {
@@ -62,6 +63,22 @@ export default
 					right: ''
 				},
 			},
+		}
+	},
+
+
+	computed:
+	{
+		/**
+		 * @description Populate CSS variables from computed values
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {Object}
+		 */
+		cssVars()
+		{
+			return {
+				'--footer-icon-width': `${this.footer_width}px`,
+			}
 		}
 	},
 
@@ -91,7 +108,7 @@ export default
 			if (!screen) return
 			this.screen = screen
 
-			this.screen.applyBgColor()
+			this.$root.setBgColour(this.screen.backgroundColorRgb)
 		},
 
 
@@ -118,6 +135,18 @@ export default
 					break;
 			}
 		},
+
+
+		/**
+		 * @description Window resize handler
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {void}
+		 */
+		resizeHandler()
+		{
+			// Hack for older browsers
+			this.footer_width = this.$refs.footerIconWidth.clientHeight * 0.7
+		},
 	},
 
 
@@ -127,8 +156,30 @@ export default
 	 */
 	mounted()
 	{
+		window.addEventListener("resize", this.resizeHandler)
 		this.fetchTiles()
 		this.updateScreen()
+		this.resizeHandler()
+
+		// Send `change` event to broker
+		let payload = {
+			screen: this.$route.params.screen,
+			type: 'screen',
+			event: 'change',
+			state: 'loaded',
+		}
+		this.$root.mqttSend(payload)
+	},
+
+
+	/**
+	 * @description Called when view is unloaded
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @return {void}
+	 */
+	unmounted()
+	{
+		window.removeEventListener("resize", this.resizeHandler)
 	},
 }
 </script>
@@ -154,7 +205,7 @@ export default
 
 	<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 
-	<footer bp="grid 4">
+	<footer bp="grid 4" :style="cssVars">
 		<template v-if="screen.footer.left">
 			<h2>{{ screen.footer.left }}</h2>
 		</template>
@@ -163,10 +214,10 @@ export default
 		</template>
 
 		<template v-if="screen.footer.center">
-			<button @click="press('center')">{{ screen.footer.center }}</button>
+			<button @click="press('center')" ref="footerIconWidth">{{ screen.footer.center }}</button>
 		</template>
 		<template v-else>
-			<button @click="press('center')">{{ screen.label }}</button>
+			<button @click="press('center')" ref="footerIconWidth">{{ screen.label }}</button>
 		</template>
 
 		<template v-if="screen.footer.right">

@@ -24,10 +24,12 @@ export default
 	{
 		return {
 			wheel_height: null,
+			footer_width: null,
 			drag_event: null,
 			vect1: new Vector(0,0),
 			vect2: new Vector(0,0),
 			colour: {h: 0, s: 0, b: 100},
+			sliderColour: {r: 255, g: 255, b: 255},
 		}
 	},
 
@@ -44,7 +46,9 @@ export default
 		{
 			return {
 				'--wheel-height': `${this.wheel_height}px`,
-				'--puck-colour': `rgb(${this.tile.colorRgb.r}, ${this.tile.colorRgb.g}, ${this.tile.colorRgb.b})`
+				'--footer-icon-width': `${this.footer_width}px`,
+				'--puck-colour': `rgb(${this.tile.colorRgb.r}, ${this.tile.colorRgb.g}, ${this.tile.colorRgb.b})`,
+				'--slider-colour': `rgb(${this.sliderColour.r}, ${this.sliderColour.g}, ${this.sliderColour.b})`
 			}
 		}
 	},
@@ -209,6 +213,7 @@ export default
 
 			// Convert to RGB
 			this.tile.colorRgb = Colour.hsb2rgb(this.colour.h, this.colour.s, this.colour.b)
+			this.sliderColour = Colour.hsb2rgb(this.colour.h, this.colour.s, 100)
 
 			// Re-add radius of colour wheel
 			this.vect2.add(this.vect1)
@@ -252,12 +257,17 @@ export default
 		 */
 		resizeHandler()
 		{
+			// Hack for older browsers
 			this.wheel_height = this.$refs.wheelheight.clientWidth
+			this.footer_width = this.$refs.footerIconWidth.clientHeight * 0.7
+
+			// Radius of colour wheel
 			this.vect1.x = this.$refs.wheelheight.clientWidth / 2
 			this.vect1.y = this.$refs.wheelheight.clientHeight / 2
 
 			// Calc HSB from RGB
 			this.colour = Colour.rgb2hsb(this.tile.colorRgb.r, this.tile.colorRgb.g, this.tile.colorRgb.b)
+			this.sliderColour = Colour.hsb2rgb(this.colour.h, this.colour.s, 100)
 
 			// Get X,Y of HSB
 			this.vect2 = Colour.hsb2vect(this.colour.h, this.colour.s, this.vect2, this.$refs.wheelheight.clientHeight / 2)
@@ -282,19 +292,32 @@ export default
 	 */
 	mounted()
 	{
+		window.addEventListener("resize", this.resizeHandler)
 		this.resizeHandler()
+	},
+
+
+	/**
+	 * @description Called when view is unloaded
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @return {void}
+	 */
+	unmounted()
+	{
+		window.removeEventListener("resize", this.resizeHandler)
 	},
 }
 </script>
 
 <template>
-	<header bp="grid 4">
+	<header bp="grid 4" :style="cssVars">
 		<button class="icon icon--before icon-_rgb"></button>
 		<h2>{{ tile.label }}</h2>
 		<button class="icon icon--before icon-_cct"></button>
 	</header>
 
 	<main bp="container" :style="cssVars">
+
 		<div class="header-pad">&nbsp;<!-- compensates for fixed header --></div>
 
 		<div class="colour-picker"
@@ -322,8 +345,8 @@ export default
 		<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 	</main>
 
-	<footer bp="grid 4">
-		<button class="icon icon--before icon-_left" @click="mouseDown('back')"></button>
+	<footer bp="grid 4" :style="cssVars">
+		<button class="icon icon--before icon-_left" @click="mouseDown('back')" ref="footerIconWidth"></button>
 		<h2>&nbsp;</h2>
 		<button :class="`icon icon--before icon-${tile.icon}`" @click="mouseDown('state')"></button>
 	</footer>
@@ -331,12 +354,13 @@ export default
 </template>
 
 <style scoped>
-.colour-picker .puck
+.colour-picker .puck,
+.brightness-slider .puck
 {
 	background-color: var(--puck-colour);
 }
 .brightness-slider
 {
-	background-color: var(--puck-colour);
+	background-color: var(--slider-colour);
 }
 </style>

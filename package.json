@@ -2,14 +2,12 @@
   "name": "OXRS-IO-TouchPanel-WEB-APP",
   "description": "OXRS IO Touch Panel Web App",
   "author": "Christopher Aitken",
-  "homepage": "https://OXRS-IO.github.com/OXRS-IO-TouchPanel-WEB-APP",
+  "homepage": "https://github.com/caitken-com",
   "version": "0.0.6",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview --port 5050",
-    "redeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "build": "node build && vite build",
+    "preview": "vite preview --port 5050"
   },
   "keywords": [
     "oxrs",
@@ -34,7 +32,6 @@
     "@babel/core": "^7.18.10",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vitejs/plugin-vue-jsx": "^1.3.9",
-    "gh-pages": "^5.0.0",
     "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
     "html-webpack-plugin": "^5.5.0",
     "vite": "^2.9.1"

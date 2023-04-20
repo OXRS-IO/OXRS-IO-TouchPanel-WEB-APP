@@ -1,5 +1,6 @@
 class Tile
 {
+	_app = null
 	id = null
 	screen = null
 	label = null
@@ -34,10 +35,12 @@ class Tile
 	 * @description Initialise Tile
 	 * @memberof OXRS-IO-TouchPanel-WEB-APP
 	 * @param {Object} data Collection of tile properties
+	 * @param {Object} App instance
 	 * @returns {Tile}
 	 */
-	constructor(data)
+	constructor(data, app)
 	{
+		this._app = app
 		this.update(data)
 	}
 

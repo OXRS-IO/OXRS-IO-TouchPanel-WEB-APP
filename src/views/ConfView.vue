@@ -1,48 +1,35 @@
-<script setup>
-defineProps({
-	host:
-	{
-		type: String,
-		required: true,
-	},
-	port:
-	{
-		type: Number,
-		required: true,
-	},
-	username:
-	{
-		type: String,
-		required: false,
-	},
-	password:
-	{
-		type: String,
-		required: false,
-	},
-	device:
-	{
-		type: String,
-		required: true,
-	},
-	prefix:
-	{
-		type: String,
-	},
-	suffix:
-	{
-		type: String,
-	},
-	ssl:
-	{
-		type: Boolean,
-	}
-})
-</script>
-
 <script>
 export default
 {
+	data()
+	{
+		return {
+			host: null,
+			port: null,
+			username: null,
+			password: null,
+			device: null,
+			prefix: null,
+			suffix: null,
+			ssl: null,
+			dt: new Date(this.$root.$version),
+			changed: false,
+		}
+	},
+
+
+	watch: {
+		host: { handler: function(val) { return this.hasChanged(val, this.$root.host) }, deep: true },
+		port: { handler: function(val) { return this.hasChanged(val, this.$root.port) }, deep: true },
+		username: { handler: function(val) { return this.hasChanged(val, this.$root.device) }, deep: true },
+		password: { handler: function(val) { return this.hasChanged(val, this.$root.username) }, deep: true },
+		device: { handler: function(val) { return this.hasChanged(val, this.$root.password) }, deep: true },
+		prefix: { handler: function(val) { return this.hasChanged(val, this.$root.prefix) }, deep: true },
+		suffix: { handler: function(val) { return this.hasChanged(val, this.$root.suffix) }, deep: true },
+		ssl: { handler: function(val) { return this.hasChanged(val, this.$root.ssl) }, deep: true },
+	},
+
+
 	methods:
 	{
 		/**
@@ -69,7 +56,7 @@ export default
 		/**
 		 * @description Populate form
 		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @return {false}
+		 * @return {void}
 		 */
 		updateForm()
 		{
@@ -82,6 +69,39 @@ export default
 			suffix.value = this.$root.suffix
 			ssl.checked = this.$root.ssl
 		},
+
+
+		/**
+		 * @description Determine if form has changed
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {void}
+		 */
+		hasChanged(value, def)
+		{
+			if (value != def) this.changed = true
+		},
+
+
+		/**
+		 * @description Handle toggle fullscreen button event
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {void}
+		 */
+		fullscreen()
+		{
+			this.$root.toggleFullscreen()
+		},
+
+
+		/**
+		 * @description Cancel changes
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @return {void}
+		 */
+		cancel()
+		{
+			this.$root.navigateToUrl('/')
+		},
 	},
 
 
@@ -92,7 +112,7 @@ export default
 	mounted()
 	{
 		this.updateForm()
-		document.querySelector('body').setAttribute('style', `background-color: rgb(0, 0, 0)`)
+		this.$root.setBgColour({r: 0, g: 0, b: 0})
 	},
 }
 </script>
@@ -101,6 +121,8 @@ export default
 	<form action="" bp="container">
 
 		<h2 class="logo-before">MQTT broker&nbsp;configuration</h2>
+
+		<p>Build: {{ `${dt.getUTCFullYear()}-${dt.getUTCMonth()+1}-${dt.getUTCDate()} ${dt.getUTCHours()}:${dt.getUTCMinutes()}:${dt.getUTCSeconds()}` }} UTC</p>
 
 		<div bp="grid">
 			<div bp="12 9@lg">
@@ -126,8 +148,20 @@ export default
 			</div>
 		</div>
 
-		<label for="device">Client ID:</label>
-		<input type="text" name="device" v-model="device" id="device" placeholder="TouchPanelWeb" />
+		<div bp="grid vertical-end">
+			<div bp="12 9@lg">
+				<label for="device">Client ID:</label>
+				<input type="text" name="device" v-model="device" id="device" placeholder="TouchPanelWeb" />
+			</div>
+
+			<div bp="12 3@lg">
+				<label for="ssl" class="form-checkbox">
+					<input type="checkbox" name="ssl" v-model="ssl" id="ssl" value="1" />
+					<span class="checkmark"></span>
+					<span class="label">Enable SSL</span>
+				</label>
+			</div>
+		</div>
 
 		<div bp="grid">
 			<div bp="12 6@lg">
@@ -141,14 +175,15 @@ export default
 			</div>
 		</div>
 
-		<div>
-			<label for="ssl" class="form-checkbox">Enable SSL
-				<input type="checkbox" name="ssl" v-model="ssl" id="ssl" value="1" />
-				<span class="form-checkmark"></span>
-			</label>
-		</div>
+		<button class="right icon icon--before icon-_fullscreen" type="button" @click="fullscreen">Fullscreen</button>
 
-		<button @click="submit" type="button">Connect</button>
+		<template v-if="!this.$root.mqtt || !this.$root.mqtt.isConnected() || this.changed">
+			<button @click="submit" type="button" class="submit">Connect</button>
+		</template>
+
+		<template v-if="this.$root.mqtt && this.$root.mqtt.isConnected()">
+			<button class="icon icon--before icon-_left" type="button" @click="cancel">Cancel</button>
+		</template>
 
 	</form>
 </template>
@@ -209,16 +244,17 @@ input:focus
 	box-shadow: 0 0 10px 1px #4ec5ff;
 }
 
-form button
+button.submit
 {
-	background-color: #48c0c7;
+	background-color: #4ec5ff;
+	margin-right: 1em;
 	padding: 1rem;
 	border-radius: 0.5rem;
 	color: rgba(0,0,0,0.8);
 }
-form button:hover,
-form button:active,
-form button:focus
+button.submit:hover,
+button.submit:active,
+button.submit:focus
 {
 	background-color: #fff;
 }
@@ -226,10 +262,9 @@ form button:focus
 
 .form-checkbox
 {
-	display: inline-block;
+	display: block;
+	margin-bottom: 2em;
 	position: relative;
-	padding-left: 35px;
-	margin-bottom: 2rem;
 	cursor: pointer;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -238,59 +273,96 @@ form button:focus
 }
 .form-checkbox input
 {
+	margin: 0;
 	position: absolute;
 	opacity: 0;
 	cursor: pointer;
 	height: 0;
 	width: 0;
 }
-.form-checkmark
+.form-checkbox .checkmark
 {
 	background-color: rgba(255,255,255,0.1);
 	-webkit-backdrop-filter: saturate(180%) blur(20px);
 	backdrop-filter: saturate(180%) blur(20px);
+	margin: 0 0.5em 0 0;
 	border-radius: 0.5rem;
-	position: absolute;
-	height: 25px;
-	width: 25px;
-	top: 0;
-	left: 0;
+	display: inline-block;
+	position: relative;
+	height: 2em;
+	width: 2em;
 }
-.form-checkbox:hover input ~ .form-checkmark,
-.form-checkbox input:active ~ .form-checkmark,
-.form-checkbox input:focus ~ .form-checkmark
+.form-checkbox .label
+{
+	display: inline-block;
+	height: 2.5em;
+    vertical-align: middle;
+}
+.form-checkbox:hover input ~ .checkmark
 {
 	background-color: rgba(255,255,255,0.2);
 }
-.form-checkbox input:active ~ .form-checkmark
-.form-checkbox input:focus ~ .form-checkmark
+.form-checkbox input:active ~ .checkmark,
+.form-checkbox input:focus ~ .checkmark
+{
+
+	box-shadow: 0 0 10px 1px #4ec5ff;
+}
+.form-checkbox input:active ~ .checkmark
+.form-checkbox input:focus ~ .checkmark
+{
+	background-color: #4ec5ff;
+	box-shadow: 0 0 10px 1px #4ec5ff;
+}
+.form-checkbox input:checked ~ .checkmark
 {
 	background-color: #4ec5ff;
 }
-.form-checkbox input:checked ~ .form-checkmark
-{
-	background-color: #4ec5ff;
-}
-.form-checkmark:after
+.form-checkbox .checkmark:after
 {
 	content: "";
 	position: absolute;
 	display: none;
 }
-.form-checkbox input:checked ~ .form-checkmark:after
+.form-checkbox input:checked ~ .checkmark:after
 {
 	display: block;
 }
-.form-checkbox .form-checkmark:after
+.form-checkbox .checkmark:after
 {
-	left: 8px;
-	top: 2px;
-	width: 10px;
-	height: 20px;
+	left: 0.7em;
+	top: 0.1em;
+	width: 0.7em;
+	height: 1.8em;
 	border: solid black;
-	border-width: 0 3px 3px 0;
+	border-width: 0 0.3em 0.3em 0;
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
+}
+
+button.icon
+{
+	background-color: rgba(255,255,255,0.1);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	min-width: 6em;
+	text-indent: -999em;
+}
+
+button.icon:hover,
+button.icon:active,
+button.icon:focus
+{
+	background-color: rgba(255,255,255,0.3);
+}
+
+button.icon--before:before,
+button.icon-after:after
+{
+	height: 50%;
+	transform: translate(-50%,50%);
 }
 </style>

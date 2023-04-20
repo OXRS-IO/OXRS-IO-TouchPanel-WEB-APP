@@ -5,13 +5,6 @@ export default
 	{
 		return {
 			screens: [],
-			screen: {
-				footer: {
-					left: '',
-					center: '',
-					right: ''
-				}
-			}
 		}
 	},
 
@@ -23,7 +16,7 @@ export default
 	mounted()
 	{
 		this.screens = this.$root.screens;
-		document.querySelector('body').setAttribute('style', `background-color: rgb(0, 0, 0)`)
+		this.$root.setBgColour({r: 0, g: 0, b: 0})
 	},
 }
 </script>
@@ -37,7 +30,7 @@ export default
 		<ul>
 			<template v-for="(screen, index) in screens" :key="index">
 				<li v-if="!screen.hidden">
-					<button @click="this.$root.navigateToScreen(screen.id)">{{ screen.label }}</button>
+					<button @click="this.$root.navigateToUrl(`/screen/${screen.id}`)">{{ screen.label }}</button>
 				</li>
 			</template>
 			<li>

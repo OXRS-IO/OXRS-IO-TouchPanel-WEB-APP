@@ -51,8 +51,7 @@ export default
 		press()
 		{
 			if (!this.tile.enabled) return
-
-			this.$root.navigateToScreen(this.tile.link)
+			this.$root.navigateToUrl(`/screen/${this.tile.link}`)
 		},
 
 
