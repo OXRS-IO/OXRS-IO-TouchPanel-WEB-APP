@@ -14,6 +14,7 @@ export default
 			ssl: null,
 			dt: new Date(this.$root.$version),
 			changed: false,
+			error: this.$root.error,
 		}
 	},
 
@@ -30,6 +31,22 @@ export default
 	},
 
 
+	/**
+	 * @description Watch for changes, and populate tiles accordingly
+	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @return {void}
+	 */
+	created()
+	{
+		this.$watch(
+			() => this.$root.error, () =>
+			{
+				this.error = this.$root.error
+			}
+		)
+	},
+
+
 	methods:
 	{
 		/**
@@ -39,6 +56,8 @@ export default
 		 */
 		submit()
 		{
+			this.$root.error = null
+
 			this.$root.host = host.value
 			this.$root.port = port.value
 			this.$root.device = device.value
@@ -100,6 +119,7 @@ export default
 		 */
 		cancel()
 		{
+			this.$root.error = null
 			this.$root.navigateToUrl('/')
 		},
 	},
@@ -121,6 +141,12 @@ export default
 	<form action="" bp="container">
 
 		<h2 class="logo-before">MQTT broker&nbsp;configuration</h2>
+
+		<template v-if="error">
+			<ul class="messages">
+				<li class="error">{{ error }}</li>
+			</ul>
+		</template>
 
 		<p>Build: {{ `${dt.getUTCFullYear()}-${dt.getUTCMonth()+1}-${dt.getUTCDate()} ${dt.getUTCHours()}:${dt.getUTCMinutes()}:${dt.getUTCSeconds()}` }} UTC</p>
 

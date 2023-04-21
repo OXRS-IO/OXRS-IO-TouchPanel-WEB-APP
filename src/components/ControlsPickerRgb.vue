@@ -223,7 +223,8 @@ export default
 			this.$refs.colourPuck.style.top = `${this.vect2.y - (this.$refs.colourPuck.clientHeight / 2)}px`
 
 			// Render position of brightness puck
-			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${this.$refs.brightnessPuck.clientWidth}px)`
+			let pixels = this.$refs.brightnessPuck.clientWidth * (this.colour.b / 100)
+			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${pixels}px)`
 		},
 
 

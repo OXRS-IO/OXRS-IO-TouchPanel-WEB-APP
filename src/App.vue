@@ -26,6 +26,7 @@ export default
 			ssl: localStorage.ssl ? JSON.parse(localStorage.ssl) ? true : false : false,
 			mqtt: null,
 			screens: [],
+			error: null,
 		}
 	},
 
@@ -41,8 +42,6 @@ export default
 		{
 			let prefix = this.prefix ? `${this.prefix}/` : ''
 			let suffix = this.suffix ? `/${this.suffix}` : ''
-
-			if (this.mqtt) this.mqtt.disconnect()
 
 			this.mqtt = new Paho.Client(this.host, Number(this.port), this.device)
 			this.mqtt.onConnectionLost = this.mqttOnDisconnect
@@ -66,9 +65,9 @@ export default
 			{
 				this.mqtt.connect(options)
 			}
-			catch (err)
+			catch (error)
 			{
-				alert(err);
+				console.log(error)
 				this.navigateToUrl('/config')
 			}
 		},
@@ -121,7 +120,8 @@ export default
 			}
 			catch (error)
 			{
-				console.log(error)
+				this.error = error
+				this.navigateToUrl('/config')
 			}
 		},
 
@@ -136,9 +136,7 @@ export default
 		{
 			console.log(error)
 
-			if (error.errorCode == 0) return
-
-			this.mqtt = null
+			this.error = error
 			this.navigateToUrl('/config')
 		},
 
@@ -220,9 +218,10 @@ export default
 				// Convert JSON string into Object
 				data = JSON.parse(data)
 			}
-			catch (err)
+			catch (error)
 			{
-				alert('Malformed configuration!')
+				this.error = error
+				this.navigateToUrl('/config')
 				return
 			}
 
@@ -250,7 +249,7 @@ export default
 				// Convert JSON string into Object
 				data = JSON.parse(data)
 			}
-			catch (err)
+			catch (error)
 			{
 				// Ignore bad payloads. Should we complain?
 				return

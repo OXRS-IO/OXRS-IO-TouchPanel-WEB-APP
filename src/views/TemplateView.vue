@@ -129,6 +129,18 @@ a:focus
 	color: inherit;
 }
 
+.messages
+{
+	margin-bottom: 2rem;
+	list-style: none;
+}
+.messages .error
+{
+	background-color: rgb(178,7,53);
+	padding: 0.5em;
+	color: #fff;
+}
+
 .icon--before,
 .icon--after
 {
