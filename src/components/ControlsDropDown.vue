@@ -127,7 +127,7 @@ export default
 		<ul>
 			<template v-for="(item, index) in items" :key="index">
 			<li>
-				<button @click="mouseDown(index)" :class="tile.dropDownSelect == index ? 'active' : ''">{{ item }}</button>
+				<button @click="mouseDown(index + 1)" :class="tile.dropDownSelect == (index + 1)  ? 'active' : ''">{{ item }}</button>
 			</li>
 			</template>
 		</ul>
