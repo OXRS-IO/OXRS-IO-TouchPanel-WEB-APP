@@ -118,10 +118,10 @@ export default
 
 <template>
 
-	<header bp="grid 4" :style="cssVars">
-		<div></div>
-		<h2 :class="`icon icon--before icon-${tile.icon}`">{{ tile.label }}</h2>
-		<div></div>
+	<header :style="cssVars">
+		<div bp="container">
+			<h2 :class="`icon icon--before icon-${tile.icon}`">{{ tile.label }}</h2>
+		</div>
 	</header>
 
 	<main bp="container" :style="cssVars">
