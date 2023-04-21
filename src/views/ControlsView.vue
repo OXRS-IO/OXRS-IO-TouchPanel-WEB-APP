@@ -1,5 +1,6 @@
 <script setup>
 import ControlsPickerRgb from '@/components/ControlsPickerRgb.vue'
+import ControlsDropDown from '../components/ControlsDropDown.vue';
 </script>
 
 <script>
@@ -35,4 +36,5 @@ export default
 
 <template v-if="tile">
 	<ControlsPickerRgb v-if="tile.style == 'colorPickerRgb'" :tile="tile"></ControlsPickerRgb>
+	<ControlsDropDown v-if="tile.style == 'dropDown'" :tile="tile"></ControlsDropDown>
 </template>

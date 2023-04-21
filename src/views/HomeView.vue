@@ -42,9 +42,6 @@ export default
 </template>
 
 <style scoped>
-body {
-	background-color: #000;
-}
 h2
 {
 	margin-bottom: 3rem;

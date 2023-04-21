@@ -79,7 +79,7 @@ export default
 
 
 <template>
-<div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.type} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" ref="tileheight">
+<div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.style} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" ref="tileheight">
 
 	<div class="image"></div>
 

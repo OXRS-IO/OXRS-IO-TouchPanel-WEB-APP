@@ -8,6 +8,7 @@ import ButtonPrevNext from '@/components/ButtonPrevNext.vue'
 import ButtonLink from '@/components/ButtonLink.vue'
 import ButtonIndicator from '@/components/ButtonIndicator.vue'
 import ButtonPickerRgb from '@/components/ButtonPickerRgb.vue'
+import ButtonDropDown from '@/components/ButtonDropDown.vue'
 </script>
 
 
@@ -196,9 +197,9 @@ export default
 				<ButtonLeftRight v-if="tile.style == 'buttonLeftRight'" :tile="tile"></ButtonLeftRight>
 				<ButtonPrevNext v-if="tile.style == 'buttonPrevNext'" :tile="tile"></ButtonPrevNext>
 				<ButtonIndicator v-if="tile.style == 'indicator'" :tile="tile"></ButtonIndicator>
-				<ButtonDefault v-if="tile.style == 'dropDown'" :tile="tile"></ButtonDefault>
 				<ButtonLink v-if="tile.style == 'link'" :tile="tile"></ButtonLink>
 				<ButtonPickerRgb v-if="tile.style == 'colorPickerRgb'" :tile="tile"></ButtonPickerRgb>
+				<ButtonDropDown v-if="tile.style == 'dropDown'" :tile="tile"></ButtonDropDown>
 			</template>
 		</template>
 	</main>

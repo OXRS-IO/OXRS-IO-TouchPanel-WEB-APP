@@ -232,6 +232,11 @@ footer button:nth-child(3)
 {
 	text-align: right;
 }
+footer button.icon
+{
+	text-indent: -999em;
+}
+
 .tile
 {
 	background-color: rgba(255,255,255,0.1);
@@ -352,6 +357,19 @@ footer button:nth-child(3)
 button:disabled
 {
 	cursor: not-allowed;
+}
+
+ul button.active
+{
+	animation: active-animation 2s ease-in-out infinite;
+}
+@keyframes active-animation
+{
+	50%
+	{
+		background-color: #fff;
+		color: #000;
+	}
 }
 
 .colour-picker {

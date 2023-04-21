@@ -17,7 +17,7 @@ export default
 {
 	/**
 	 * @description Prep tiles list ready for populating
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ControlsPickerRgb
 	 * @return {Object}
 	 */
 	data()
@@ -39,7 +39,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @return {Object}
 		 */
 		cssVars()
@@ -58,7 +58,7 @@ export default
 	{
 		/**
 		 * @description Mouse down event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @param {String} type `back|state`
 		 * @return {void}
 		 */
@@ -67,7 +67,7 @@ export default
 			switch (type)
 			{
 				case 'back':
-					this.buttonBack()
+					this.$root.navigateToUrl(`/screen/${this.tile.screen}`)
 					break
 
 				case 'state':
@@ -95,7 +95,7 @@ export default
 
 		/**
 		 * @description Mouse up event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @return {void}
 		 */
 		mouseUp(type)
@@ -119,7 +119,7 @@ export default
 
 		/**
 		 * @description Colour picker mouse move
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @return {void}
 		 */
 		mouseMove(event, type)
@@ -137,21 +137,9 @@ export default
 		},
 
 
-
-		/**
-		 * @description Navigate back to tile's screen
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @return {void}
-		 */
-		buttonBack()
-		{
-			this.$root.navigateToUrl(`/screen/${this.tile.screen}`)
-		},
-
-
 		/**
 		 * @description Send press event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @return {void}
 		 */
 		buttonState()
@@ -170,7 +158,7 @@ export default
 
 		/**
 		 * @description Send colour event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @return {void}
 		 */
 		buttonColour()
@@ -189,7 +177,7 @@ export default
 
 		/**
 		 * @description Set RGB from colour puck position
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @param {Event} event
 		 * @returns {void}
 		 */
@@ -230,7 +218,7 @@ export default
 
 		/**
 		 * @description Set RGB from brightness puck position
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @param {Event} event
 		 * @returns {void}
 		 */
@@ -253,7 +241,7 @@ export default
 
 		/**
 		 * @description Window resize handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ControlsPickerRgb
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -289,6 +277,7 @@ export default
 
 	/**
 	 * @description On load
+	 * @memberof ControlsPickerRgb
 	 * @returns {void}
 	 */
 	mounted()
@@ -300,7 +289,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ControlsPickerRgb
 	 * @return {void}
 	 */
 	unmounted()
