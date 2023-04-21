@@ -59,42 +59,4 @@ h2:before
 	height: 2em;
 	vertical-align: middle;
 }
-
-ul li
-{
-	list-style-type: none;
-}
-ul li:first-child button
-{
-	border-top-left-radius: 1rem;
-	border-top-right-radius: 1rem;
-}
-ul li:last-child button
-{
-	border-bottom-left-radius: 1rem;
-	border-bottom-right-radius: 1rem;
-}
-
-button
-{
-	background-color: rgba(255,255,255,0.1);
-	-webkit-backdrop-filter: saturate(180%) blur(20px);
-	backdrop-filter: saturate(180%) blur(20px);
-	padding: 1rem;
-	width: 100%;
-	display: block;
-	overflow: hidden;
-	position: relative;
-	text-align: center;
-	font-size: 2rem;
-	color: #fff;
-}
-
-button:hover,
-button:active,
-button:focus
-{
-	background-color: rgba(255,255,255,1);
-	color: #000;
-}
 </style>

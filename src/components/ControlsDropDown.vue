@@ -118,11 +118,15 @@ export default
 
 <template>
 
+	<header bp="grid 4" :style="cssVars">
+		<div></div>
+		<h2 :class="`icon icon--before icon-${tile.icon}`">{{ tile.label }}</h2>
+		<div></div>
+	</header>
+
 	<main bp="container" :style="cssVars">
 
-		<div bp="text-center">
-			<h2 class="logo-before">{{ tile.label }}</h2>
-		</div>
+		<div class="header-pad">&nbsp;<!-- compensates for fixed header --></div>
 
 		<ul>
 			<template v-for="(item, index) in items" :key="index">
@@ -131,7 +135,6 @@ export default
 			</li>
 			</template>
 		</ul>
-
 
 		<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 	</main>
@@ -142,58 +145,5 @@ export default
 </template>
 
 <style scoped>
-h2
-{
-	margin-bottom: 3rem;
-	font-size: 2em;
-	color: #fff;
-}
-h2:before
-{
-	background-repeat: no-repeat;
-	background-size: cover;
-	display: inline-block;
-	margin-right: 1.5rem;
-	content: "";
-	width: 2em;
-	height: 2em;
-	vertical-align: middle;
-}
 
-ul li
-{
-	list-style-type: none;
-}
-ul li:first-child button
-{
-	border-top-left-radius: 1rem;
-	border-top-right-radius: 1rem;
-}
-ul li:last-child button
-{
-	border-bottom-left-radius: 1rem;
-	border-bottom-right-radius: 1rem;
-}
-
-li button
-{
-	background-color: rgba(255,255,255,0.1);
-	-webkit-backdrop-filter: saturate(180%) blur(20px);
-	backdrop-filter: saturate(180%) blur(20px);
-	padding: 1rem;
-	width: 100%;
-	display: block;
-	overflow: hidden;
-	position: relative;
-	text-align: center;
-	font-size: 2rem;
-	color: #fff;
-}
-li button:hover,
-li button:active,
-li button:focus
-{
-	background-color: rgba(255,255,255,1);
-	color: #000;
-}
 </style>
