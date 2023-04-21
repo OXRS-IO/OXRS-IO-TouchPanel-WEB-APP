@@ -187,7 +187,7 @@ export default
 	</div>
 
 	<div class="buttons">
-		<button @mousedown="mouseDown"
+		<button class="icon--mask icon-_dots" @mousedown="mouseDown"
 			@mouseup="mouseUp"
 			@mouseout="mouseUp"
 			@touchstart.prevent="mouseDown"
@@ -199,14 +199,22 @@ export default
 </template>
 
 <style scoped>
-.tile.state-on .icon
-{
-	background-color: var(--icon-color);
-}
-.buttons button:nth-child(1)
+.buttons button
 {
 	position: absolute;
 	width: 100%;
 	height: 100%;
+	-webkit-mask-size: 20%;
+	mask-size: 20%;
+	-webkit-mask-position: 100% 10%;
+	mask-position: 100% 10%;
+}
+.tile.state-on .buttons button
+{
+	background-color: var(--icon-color);
+}
+.tile.enabled-false .buttons button
+{
+	background-color: rgba(0,0,0,0.3) !important;
 }
 </style>

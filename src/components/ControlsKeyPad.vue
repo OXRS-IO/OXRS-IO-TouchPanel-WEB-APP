@@ -124,17 +124,24 @@ export default
 		</div>
 	</header>
 
-	<main bp="container" :style="cssVars">
+	<main bp="container" :style="cssVars" style="max-width: 500px">
 
 		<div class="header-pad">&nbsp;<!-- compensates for fixed header --></div>
 
-		<ul>
-			<template v-for="(item, index) in items" :key="index">
-			<li>
-				<button @click="mouseDown(index + 1)" :class="tile.dropDownSelect == (index + 1)  ? 'active' : ''">{{ item }}</button>
-			</li>
-			</template>
-		</ul>
+		<div bp="grid 4">
+			<button class="circle">1</button>
+			<button class="circle">2</button>
+			<button class="circle">3</button>
+			<button class="circle">4</button>
+			<button class="circle">5</button>
+			<button class="circle">6</button>
+			<button class="circle">7</button>
+			<button class="circle">8</button>
+			<button class="circle">9</button>
+			<button class="circle icon icon--before icon-_backspace notext">Back</button>
+			<button class="circle">0</button>
+			<button class="circle icon icon--before icon-_right notext">Confirm</button>
+		</div>
 
 		<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 	</main>

@@ -301,9 +301,9 @@ export default
 
 <template>
 	<header bp="grid 4" :style="cssVars">
-		<button class="icon icon--before icon-_rgb"></button>
+		<button class="icon icon--before icon-_rgb notext">Colour</button>
 		<h2>{{ tile.label }}</h2>
-		<button class="icon icon--before icon-_cct"></button>
+		<button class="icon icon--before icon-_cct notext">Temperature</button>
 	</header>
 
 	<main bp="container" :style="cssVars">
@@ -336,9 +336,9 @@ export default
 	</main>
 
 	<footer bp="grid 4" :style="cssVars">
-		<button class="icon icon--before icon-_left" @click="mouseDown('back')" ref="footerIconWidth"></button>
+		<button class="icon icon--before icon-_left notext" @click="mouseDown('back')" ref="footerIconWidth"></button>
 		<h2>&nbsp;</h2>
-		<button :class="`icon icon--before icon-${tile.icon}`" @click="mouseDown('state')"></button>
+		<button :class="`icon icon--before icon-${tile.icon} notext`" @click="mouseDown('state')"></button>
 	</footer>
 
 </template>

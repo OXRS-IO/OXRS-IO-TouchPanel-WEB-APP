@@ -229,22 +229,8 @@ footer button:hover.icon--before:before
 {
 	background-color: rgba(255,255,255,1);
 }
-header button:nth-child(1)
-footer button:nth-child(1)
-{
-	text-align: left;
-}
-header button:nth-child(2),
-footer button:nth-child(2)
-{
-	text-align: center;
-}
-header button:nth-child(3),
-footer button:nth-child(3)
-{
-	text-align: right;
-}
-footer button.icon
+
+.notext
 {
 	text-indent: -999em;
 }
@@ -406,6 +392,34 @@ li button:focus
 button:disabled
 {
 	cursor: not-allowed;
+}
+
+button.circle
+{
+	background-color: rgba(255,255,255,0.1);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+	border-radius: 50%;
+	width: 100%;
+	aspect-ratio: 1/1;
+	font-weight: bold;
+	font-size: 2rem;
+	color: #fff;
+}
+button.circle:hover,
+button.circle:active,
+button.circle:focus
+{
+	background-color: rgba(255,255,255,0.2);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+}
+
+button.circle.icon--before:before,
+button.circle.icon--after:after
+{
+	height: 50%;
+	transform: translate(-50%,50%);
 }
 
 ul button.active
@@ -588,6 +602,11 @@ ul button.active
 	footer .icon--after:after
 	{
 		width: var(--footer-icon-width);
+	}
+
+	.circle
+	{
+		height: var(--circle-width);
 	}
 }
 

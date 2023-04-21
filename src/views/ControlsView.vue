@@ -1,6 +1,8 @@
 <script setup>
 import ControlsPickerRgb from '@/components/ControlsPickerRgb.vue'
-import ControlsDropDown from '../components/ControlsDropDown.vue';
+import ControlsDropDown from '@/components/ControlsDropDown.vue';
+import ControlsKeyPad from '@/components/ControlsKeyPad.vue';
+import ControlsRemote from '@/components/ControlsRemote.vue';
 </script>
 
 <script>
@@ -37,4 +39,6 @@ export default
 <template v-if="tile">
 	<ControlsPickerRgb v-if="tile.style == 'colorPickerRgb'" :tile="tile"></ControlsPickerRgb>
 	<ControlsDropDown v-if="tile.style == 'dropDown'" :tile="tile"></ControlsDropDown>
+	<ControlsKeyPad v-if="tile.style == 'keyPad'" :tile="tile"></ControlsKeyPad>
+	<ControlsRemote v-if="tile.style == 'remote'" :tile="tile"></ControlsRemote>
 </template>

@@ -9,6 +9,8 @@ import ButtonLink from '@/components/ButtonLink.vue'
 import ButtonIndicator from '@/components/ButtonIndicator.vue'
 import ButtonPickerRgb from '@/components/ButtonPickerRgb.vue'
 import ButtonDropDown from '@/components/ButtonDropDown.vue'
+import ButtonKeyPad from '@/components/ButtonKeyPad.vue'
+import ButtonRemote from '@/components/ButtonRemote.vue'
 </script>
 
 
@@ -200,6 +202,8 @@ export default
 				<ButtonLink v-if="tile.style == 'link'" :tile="tile"></ButtonLink>
 				<ButtonPickerRgb v-if="tile.style == 'colorPickerRgb'" :tile="tile"></ButtonPickerRgb>
 				<ButtonDropDown v-if="tile.style == 'dropDown'" :tile="tile"></ButtonDropDown>
+				<ButtonKeyPad v-if="tile.style == 'keyPad'" :tile="tile"></ButtonKeyPad>
+				<ButtonRemote v-if="tile.style == 'remote'" :tile="tile"></ButtonRemote>
 			</template>
 		</template>
 	</main>
@@ -211,7 +215,7 @@ export default
 			<h2>{{ screen.footer.left }}</h2>
 		</template>
 		<template v-else>
-			<button class="icon icon--before icon-_home" @click="press('left')"></button>
+			<button class="icon icon--before icon-_home notext" @click="press('left')">Home</button>
 		</template>
 
 		<template v-if="screen.footer.center">
@@ -225,7 +229,7 @@ export default
 			<h2>{{ screen.footer.right }}</h2>
 		</template>
 		<template v-else>
-			<button class="icon icon--before icon-_settings" @click="press('right')"></button>
+			<button class="icon icon--before icon-_settings notext" @click="press('right')">Settings</button>
 		</template>
 
 	</footer>

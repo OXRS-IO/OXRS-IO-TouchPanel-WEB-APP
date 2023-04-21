@@ -201,14 +201,14 @@ export default
 			</div>
 		</div>
 
-		<button class="right icon icon--before icon-_fullscreen" type="button" @click="fullscreen">Fullscreen</button>
+		<button class="right icon icon--before icon-_fullscreen notext" type="button" @click="fullscreen">Fullscreen</button>
 
 		<template v-if="!this.$root.mqtt || !this.$root.mqtt.isConnected() || this.changed">
 			<button @click="submit" type="button" class="submit">Connect</button>
 		</template>
 
 		<template v-if="this.$root.mqtt && this.$root.mqtt.isConnected()">
-			<button class="icon icon--before icon-_left" type="button" @click="cancel">Cancel</button>
+			<button class="icon icon--before icon-_left notext" type="button" @click="cancel">Cancel</button>
 		</template>
 
 	</form>

@@ -118,26 +118,21 @@ export default
 
 
 <style scoped>
-.tile.state-on .icon
+.buttons button
 {
-	background-color: var(--icon-color);
-}
-.buttons button:nth-child(1)
-{
-	background-color: #fff;
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	right: 0;
 	-webkit-mask-size: 20%;
 	mask-size: 20%;
 	-webkit-mask-position: 100% 50%;
-	mask-position:  100% 50%;
+	mask-position: 100% 50%;
 }
-.tile.enabled-false button
+.tile.state-on .buttons button
+{
+	background-color: var(--icon-color);
+}
+.tile.enabled-false .buttons button
 {
 	background-color: rgba(0,0,0,0.3) !important;
 }

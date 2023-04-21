@@ -93,7 +93,7 @@ export default
 		 * @param {String} type `button|left|right`
 		 * @return {void}
 		 */
-		 mouseHold(type)
+		mouseHold(type)
 		{
 			this.interval = 200
 			this.hold(type)
