@@ -2,7 +2,7 @@
   "name": "OXRS-IO-TouchPanel-WEB-APP",
   "description": "OXRS IO Touch Panel Web App",
   "author": "Christopher Aitken",
-  "homepage": "https://OXRS-IO.github.com/OXRS-IO-TouchPanel-WEB-APP",
+  "homepage": "https://touch.oxrs.io",
   "version": "0.0.6",
   "scripts": {
     "dev": "vite",
