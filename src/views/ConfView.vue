@@ -140,7 +140,7 @@ export default
 <template>
 	<form action="" bp="container">
 
-		<h2 class="logo-before">MQTT broker&nbsp;configuration</h2>
+		<h2 class="logo-before">MQTT broker&nbsp;configuration.</h2>
 
 		<template v-if="error">
 			<ul class="messages">

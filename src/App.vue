@@ -30,7 +30,6 @@ export default
 		}
 	},
 
-
 	methods:
 	{
 		/**
@@ -560,7 +559,6 @@ export default
 			this.navigateToUrl('/config')
 		}
 	}
-
 }
 </script>
 
