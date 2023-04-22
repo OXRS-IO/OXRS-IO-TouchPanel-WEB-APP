@@ -8,8 +8,7 @@
     "dev": "vite",
     "build": "node build && vite build",
     "preview": "vite preview --port 5050",
-    "redeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "npm run build && echo 'touch.oxrs.io' > ./dist/CNAME && gh-pages -d dist"
   },
   "keywords": [
     "oxrs",
