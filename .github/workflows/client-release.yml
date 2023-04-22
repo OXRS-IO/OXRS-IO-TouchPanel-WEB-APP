@@ -28,7 +28,7 @@ jobs:
         run: npm run build
       
       - name: Move dist dir for release
-        run: mv ./dist ./dist
+        run: mv ./dist .
 
       - name: Custom domain - github pages
         run: echo 'touch.oxrs.io' > ./dist/CNAME
