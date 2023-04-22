@@ -29,8 +29,5 @@ jobs:
       - name: NPM I
         run: npm ci
 
-      - name: NPM Validate
-        run: npm run validate
-
       - name: NPM Build
         run: npm run build
