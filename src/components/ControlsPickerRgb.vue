@@ -408,27 +408,27 @@ export default
 
 	<main :style="cssVars">
 
-		<div class="colour-container"
-			@mousedown="mouseDown('colour')"
-			@mouseleave="mouseUp('colour')"
-			@mouseup="mouseUp('colour')"
-			@touchstart.prevent="mouseDown('colour')"
-			@touchend.prevent="mouseUp('colour')"
-			>
-			<div class="colour-wheel" ref="wheelheight">
+		<div class="colour-container">
+			<div class="colour-wheel"
+				@mousedown="mouseDown('colour')"
+				@mouseleave="mouseUp('colour')"
+				@mouseup="mouseUp('colour')"
+				@touchstart.prevent="mouseDown('colour')"
+				@touchend.prevent="mouseUp('colour')"
+				ref="wheelheight">
 				<div class="puck" ref="colourPuck"></div>
 			</div>
 
 		</div>
 
-		<div class="brightness-container"
-			@mousedown="mouseDown('brightness')"
-			@mouseleave="mouseUp('brightness')"
-			@mouseup="mouseUp('brightness')"
-			@touchstart.prevent="mouseDown('brightness')"
-			@touchend.prevent="mouseUp('brightness')"
-			>
-			<div class="brightness-slider" ref="brightnessWidth">
+		<div class="brightness-container">
+			<div class="brightness-slider"
+				@mousedown="mouseDown('brightness')"
+				@mouseleave="mouseUp('brightness')"
+				@mouseup="mouseUp('brightness')"
+				@touchstart.prevent="mouseDown('brightness')"
+				@touchend.prevent="mouseUp('brightness')"
+				ref="brightnessWidth">
 				<div class="puck" ref="brightnessPuck"></div>
 			</div>
 		</div>
