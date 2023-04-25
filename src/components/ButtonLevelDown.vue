@@ -11,7 +11,8 @@ defineProps({
 export default
 {
 	/**
-	 * @description Prep timer ready for hold events
+	 * @description Prep data ready for populating
+	 * @memberof ButtonLevelDown
 	 * @return {Object}
 	 */
 	data()
@@ -30,7 +31,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @return {Object}
 		 */
 		cssVars()
@@ -48,7 +49,7 @@ export default
 	{
 		/**
 		 * @description Mouse down event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
@@ -63,7 +64,7 @@ export default
 
 		/**
 		 * @description Mouse up event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
@@ -89,7 +90,7 @@ export default
 
 		/**
 		 * @description Mouse hold event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
@@ -109,8 +110,22 @@ export default
 
 
 		/**
+		 * @description Mouse cancel event handler
+		 * @memberof ButtonLevelDown
+		 * @return {void}
+		 */
+		mouseCancel()
+		{
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = ''
+		},
+
+
+		/**
 		 * @description Send press event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
@@ -148,7 +163,7 @@ export default
 
 		/**
 		 * @description Send hold event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @param {String} type `button|up|down`
 		 * @return {void}
 		 */
@@ -186,7 +201,7 @@ export default
 
 		/**
 		 * @description Window resize handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLevelDown
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -199,7 +214,7 @@ export default
 
 	/**
 	 * @description Called when view is ready
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonLevelDown
 	 * @return {void}
 	 */
 	mounted()
@@ -211,7 +226,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonLevelDown
 	 * @return {void}
 	 */
 	unmounted()
@@ -240,26 +255,32 @@ export default
 	</div>
 
 	<div class="buttons">
-		<button @mousedown="mouseDown('button')"
+		<button
+			@mousedown="mouseDown('button')"
 			@mouseup="mouseUp('button')"
 			@mouseout="mouseUp('button')"
-			@touchstart.prevent="mouseDown('button')"
+			@touchstart="mouseDown('button')"
 			@touchend.prevent="mouseUp('button')"
+			@touchmove="mouseCancel"
 			v-bind:disabled="!tile.enabled"></button>
 
-		<button @mousedown="mouseDown('up')"
+		<button
+			@mousedown="mouseDown('up')"
 			@mouseup="mouseUp('up')"
 			@mouseout="mouseUp('up')"
-			@touchstart.prevent="mouseDown('up')"
+			@touchstart="mouseDown('up')"
 			@touchend.prevent="mouseUp('up')"
+			@touchmove="mouseCancel"
 			class="icon--mask icon-_up"
 			v-bind:disabled="!tile.enabled"></button>
 
-		<button @mousedown="mouseDown('down')"
+		<button
+			@mousedown="mouseDown('down')"
 			@mouseup="mouseUp('down')"
 			@mouseout="mouseUp('down')"
-			@touchstart.prevent="mouseDown('down')"
+			@touchstart="mouseDown('down')"
 			@touchend.prevent="mouseUp('down')"
+			@touchmove="mouseCancel"
 			class="icon--mask icon-_down"
 			v-bind:disabled="!tile.enabled"></button>
 	</div>

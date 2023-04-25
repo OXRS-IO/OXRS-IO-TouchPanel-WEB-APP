@@ -131,6 +131,7 @@ export default
 	 */
 	mounted()
 	{
+		this.$root.setAppCss({'gridTemplateRows': 'calc(100vh - var(--footer-height)) 4em'})
 		this.updateForm()
 		this.$root.setBgColour({r: 0, g: 0, b: 0})
 	},
@@ -138,13 +139,17 @@ export default
 </script>
 
 <template>
-	<form action="" bp="container">
 
-		<h2 class="logo-before">MQTT broker&nbsp;configuration.</h2>
+	<main>
+		<form action="" bp="container">
+
+		<h2 class="logo-before">MQTT broker&nbsp;configuration</h2>
 
 		<template v-if="error">
 			<ul class="messages">
-				<li class="error">{{ error }}</li>
+				<template v-for="(msg, label) in error" :key="label">
+				<li class="error">{{ label }}: {{ msg }}</li>
+				</template>
 			</ul>
 		</template>
 
@@ -152,7 +157,7 @@ export default
 
 		<div bp="grid">
 			<div bp="12 9@lg">
-				<label for="host">Host: IP address or hostname of your broker's websocket</label>
+				<label for="host">Host:</label>
 				<input type="text" name="host" v-model="host" id="host" placeholder="192.168.1.123, localhost, xyz.com" />
 			</div>
 
@@ -201,23 +206,44 @@ export default
 			</div>
 		</div>
 
-		<button class="right icon icon--before icon-_fullscreen notext" type="button" @click="fullscreen">Fullscreen</button>
+		</form>
+	</main>
 
-		<template v-if="!this.$root.mqtt || !this.$root.mqtt.isConnected() || this.changed">
-			<button @click="submit" type="button" class="submit">Connect</button>
-		</template>
+	<footer :style="cssVars">
 
 		<template v-if="this.$root.mqtt && this.$root.mqtt.isConnected()">
 			<button class="icon icon--before icon-_left notext" type="button" @click="cancel">Cancel</button>
 		</template>
+		<template v-else>
+			<div></div>
+		</template>
 
-	</form>
+		<template v-if="!this.$root.mqtt || !this.$root.mqtt.isConnected() || this.changed">
+			<button @click="submit" type="button" class="submit">Connect</button>
+		</template>
+		<template v-else>
+			<div></div>
+		</template>
+
+		<button class="icon icon--before icon-_fullscreen notext" type="button" @click="fullscreen">Fullscreen</button>
+
+	</footer>
+
+
 </template>
 
 <style scoped>
-body {
+body
+{
 	background-color: #000;
 }
+
+main
+{
+	padding: 1em;
+	overflow-y: scroll
+}
+
 h2
 {
 	margin-bottom: 3rem;
@@ -272,17 +298,22 @@ input:focus
 
 button.submit
 {
-	background-color: #4ec5ff;
-	margin-right: 1em;
-	padding: 1rem;
-	border-radius: 0.5rem;
-	color: rgba(0,0,0,0.8);
+	animation: submit-animation 2s ease-in-out infinite;
 }
 button.submit:hover,
 button.submit:active,
 button.submit:focus
 {
 	background-color: #fff;
+}
+
+@keyframes submit-animation
+{
+	50%
+	{
+		background-color: #4ec5ff;
+		color: #000;
+	}
 }
 
 
@@ -365,30 +396,5 @@ button.submit:focus
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
-}
-
-button.icon
-{
-	background-color: rgba(255,255,255,0.1);
-	-webkit-backdrop-filter: saturate(180%) blur(20px);
-	backdrop-filter: saturate(180%) blur(20px);
-	padding: 1rem;
-	border-radius: 0.5rem;
-	min-width: 6em;
-	text-indent: -999em;
-}
-
-button.icon:hover,
-button.icon:active,
-button.icon:focus
-{
-	background-color: rgba(255,255,255,0.3);
-}
-
-button.icon--before:before,
-button.icon-after:after
-{
-	height: 50%;
-	transform: translate(-50%,50%);
 }
 </style>

@@ -12,6 +12,7 @@ export default
 {
 	/**
 	 * @description Prep timestamp ready for hold events
+	 * @memberof ButtonIndicator
 	 * @return {Object}
 	 */
 	data()
@@ -26,7 +27,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonIndicator
 		 * @return {Object}
 		 */
 		cssVars()
@@ -43,7 +44,7 @@ export default
 	{
 		/**
 		 * @description Window resize handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonIndicator
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -55,7 +56,7 @@ export default
 
 	/**
 	 * @description Called when view is ready
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonIndicator
 	 * @return {void}
 	 */
 	mounted()
@@ -67,7 +68,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonIndicator
 	 * @return {void}
 	 */
 	 unmounted()

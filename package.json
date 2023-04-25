@@ -6,7 +6,7 @@
   "version": "0.0.6",
   "scripts": {
     "dev": "vite",
-    "build": "node build && vite build",
+    "build": "node build && vite build && git checkout HEAD dist/CNAME",
     "preview": "vite preview --port 5050",
     "deploy": "npm run build && echo 'touch.oxrs.io' > ./dist/CNAME && gh-pages -d dist"
   },

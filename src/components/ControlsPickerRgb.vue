@@ -23,6 +23,9 @@ export default
 	data()
 	{
 		return {
+			timer: null,
+			interval: 500,
+			wheel_width: null,
 			wheel_height: null,
 			footer_width: null,
 			drag_event: null,
@@ -30,6 +33,9 @@ export default
 			vect2: new Vector(0,0),
 			colour: {h: 0, s: 0, b: 100},
 			sliderColour: {r: 255, g: 255, b: 255},
+			animations: {
+				button: null
+			},
 		}
 	},
 
@@ -46,6 +52,7 @@ export default
 		{
 			return {
 				'--wheel-height': `${this.wheel_height}px`,
+				'--wheel-width': `${this.wheel_width}px`,
 				'--footer-icon-width': `${this.footer_width}px`,
 				'--puck-colour': `rgb(${this.tile.colorRgb.r}, ${this.tile.colorRgb.g}, ${this.tile.colorRgb.b})`,
 				'--slider-colour': `rgb(${this.sliderColour.r}, ${this.sliderColour.g}, ${this.sliderColour.b})`
@@ -70,8 +77,11 @@ export default
 					this.$root.navigateToUrl(`/screen/${this.tile.screen}`)
 					break
 
-				case 'state':
-					this.buttonState()
+				case 'button':
+					if (!this.tile.enabled) return
+
+					this.animations.button = 'press-animation'
+					this.timer = setInterval(this.mouseHold, this.interval)
 					break
 
 				case 'colour':
@@ -112,6 +122,24 @@ export default
 					this.drag_event = null
 					this.buttonColour()
 					break
+
+				case 'button':
+					if (!this.timer) return
+
+					clearInterval(this.timer)
+					this.timer = null
+
+					if (this.interval == 500)
+					{
+						this.buttonPress()
+					}
+					else
+					{
+						this.interval = 500
+					}
+
+					this.animations.button = 'bounce-animation'
+					break
 			}
 		},
 
@@ -138,11 +166,28 @@ export default
 
 
 		/**
+		 * @description Mouse hold event handler
+		 * @memberof ControlsPickerRgb
+		 * @return {void}
+		 */
+		mouseHold()
+		{
+			this.buttonHold()
+
+			// Only fire `hold` event once
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animations.button = 'bounce-animation'
+		},
+
+
+		/**
 		 * @description Send press event from Tile
 		 * @memberof ControlsPickerRgb
 		 * @return {void}
 		 */
-		buttonState()
+		buttonPress()
 		{
 			let payload = {};
 			payload.screen = this.tile.screen
@@ -151,6 +196,25 @@ export default
 			payload.type = 'button'
 			payload.state = this.tile.state
 			payload.event = 'single'
+
+			this.$root.mqttSend(payload)
+		},
+
+
+		/**
+		 * @description Send hold event from Tile
+		 * @memberof ControlsPickerRgb
+		 * @return {void}
+		 */
+		buttonHold()
+		{
+			let payload = {};
+			payload.screen = this.tile.screen
+			payload.tile = this.tile.id
+			payload.style = this.tile.style
+			payload.type = 'button'
+			payload.state = this.tile.state
+			payload.event = 'hold'
 
 			this.$root.mqttSend(payload)
 		},
@@ -206,13 +270,21 @@ export default
 			// Re-add radius of colour wheel
 			this.vect2.add(this.vect1)
 
+			// Calc colour puck offset. Reference is top-left of puck
+			let offset = new Vector(
+				(this.vect2.x / this.$refs.wheelheight.clientWidth) * 100,
+				(this.vect2.y / this.$refs.wheelheight.clientHeight) * 100,
+			)
+
 			// Render position of colour puck
-			this.$refs.colourPuck.style.left = `${this.vect2.x - (this.$refs.colourPuck.clientWidth / 2)}px`
-			this.$refs.colourPuck.style.top = `${this.vect2.y - (this.$refs.colourPuck.clientHeight / 2)}px`
+			this.$refs.colourPuck.style.left = `${this.vect2.x - (this.$refs.colourPuck.offsetWidth * (offset.x / 100))}px`
+			this.$refs.colourPuck.style.top = `${this.vect2.y - (this.$refs.colourPuck.offsetHeight * (offset.y / 100))}px`
+
+			// Calc brightness puck offset. Reference is top-left of puck
+			offset = this.$refs.brightnessPuck.offsetWidth * (this.colour.b / 100)
 
 			// Render position of brightness puck
-			let pixels = this.$refs.brightnessPuck.clientWidth * (this.colour.b / 100)
-			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${pixels}px)`
+			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${offset}px)`
 		},
 
 
@@ -233,9 +305,11 @@ export default
 			// Convert to RGB
 			this.tile.colorRgb = Colour.hsb2rgb(this.colour.h, this.colour.s, this.colour.b)
 
+			// Calc brightness puck offset. Reference is top-left of puck
+			let offset = this.$refs.brightnessPuck.offsetWidth * (this.colour.b / 100)
+
 			// Render position of brightness puck
-			let pixels = this.$refs.brightnessPuck.clientWidth * (this.colour.b / 100)
-			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${pixels}px)`
+			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${offset}px)`
 		},
 
 
@@ -246,8 +320,24 @@ export default
 		 */
 		resizeHandler()
 		{
+			// Prioritise height of colour wheel
+			this.$refs.wheelheight.style.width = 'auto'
+			this.$refs.wheelheight.style.height = '100%'
+
+			// Calc width, heights
+			this.wheel_width = this.$refs.wheelheight.clientWidth
+			this.wheel_height = this.$refs.wheelheight.clientHeight
+
+			// Prioritise width of colour wheel when portrait screen ratio
+			if (this.wheel_height > this.wheel_width)
+			{
+				this.$refs.wheelheight.style.width = '100%'
+				this.$refs.wheelheight.style.height = 'auto'
+			}
+
 			// Hack for older browsers
-			this.wheel_height = this.$refs.wheelheight.clientWidth
+			this.wheel_width = this.$refs.wheelheight.clientWidth
+			this.wheel_height = this.$refs.wheelheight.clientHeight
 			this.footer_width = this.$refs.footerIconWidth.clientHeight * 0.7
 
 			// Radius of colour wheel
@@ -264,13 +354,21 @@ export default
 			// Add radius to X,Y
 			this.vect2.add(this.vect1)
 
+			// Calc colour puck offset. Reference is top-left of puck
+			let offset = new Vector(
+				(this.vect2.x / this.$refs.wheelheight.clientWidth) * 100,
+				(this.vect2.y / this.$refs.wheelheight.clientHeight) * 100,
+			)
+
 			// Render position of colour puck
-			this.$refs.colourPuck.style.left = `${this.vect2.x - (this.$refs.colourPuck.clientWidth / 2)}px`
-			this.$refs.colourPuck.style.top = `${this.vect2.y - (this.$refs.colourPuck.clientHeight / 2)}px`
+			this.$refs.colourPuck.style.left = `${this.vect2.x - (this.$refs.colourPuck.offsetWidth * (offset.x / 100))}px`
+			this.$refs.colourPuck.style.top = `${this.vect2.y - (this.$refs.colourPuck.offsetHeight * (offset.y / 100))}px`
+
+			// Calc brightness puck offset. Reference is top-left of puck
+			offset = this.$refs.brightnessPuck.offsetWidth * (this.colour.b / 100)
 
 			// Render position of brightness puck
-			let pixels = this.$refs.brightnessPuck.clientWidth * (this.colour.b / 100)
-			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${pixels}px)`
+			this.$refs.brightnessPuck.style.left = `calc(${this.colour.b}% - ${offset}px)`
 		},
 	},
 
@@ -282,6 +380,8 @@ export default
 	 */
 	mounted()
 	{
+		this.$root.setAppCss({"gridTemplateRows": "4em auto 4em"})
+
 		window.addEventListener("resize", this.resizeHandler)
 		this.resizeHandler()
 	},
@@ -300,51 +400,70 @@ export default
 </script>
 
 <template>
-	<header bp="grid 4" :style="cssVars">
+	<header :style="cssVars">
 		<button class="icon icon--before icon-_rgb notext">Colour</button>
-		<h2>{{ tile.label }}</h2>
+		<h1>{{ tile.label }}</h1>
 		<button class="icon icon--before icon-_cct notext">Temperature</button>
 	</header>
 
-	<main bp="container" :style="cssVars">
+	<main :style="cssVars">
 
-		<div class="header-pad">&nbsp;<!-- compensates for fixed header --></div>
-
-		<div class="colour-picker"
-				@mousedown.prevent="mouseDown('colour')"
-				@mouseleave.prevent="mouseUp('colour')"
-				@mouseup.prevent="mouseUp('colour')"
-				@touchstart.prevent="mouseDown('colour')"
-				@touchend.prevent="mouseUp('colour')">
+		<div class="colour-container"
+			@mousedown="mouseDown('colour')"
+			@mouseleave="mouseUp('colour')"
+			@mouseup="mouseUp('colour')"
+			@touchstart.prevent="mouseDown('colour')"
+			@touchend.prevent="mouseUp('colour')"
+			>
 			<div class="colour-wheel" ref="wheelheight">
-				<div class="rainbow"></div>
-				<div class="white"></div>
+				<div class="puck" ref="colourPuck"></div>
 			</div>
-			<div class="puck" ref="colourPuck"></div>
+
 		</div>
 
-		<div class="brightness-slider" ref="brightnessWidth"
-				@mousedown.prevent="mouseDown('brightness')"
-				@mouseleave.prevent="mouseUp('brightness')"
-				@mouseup.prevent="mouseUp('brightness')"
-				@touchstart.prevent="mouseDown('brightness')"
-				@touchend.prevent="mouseUp('brightness')">
-			<div class="puck" ref="brightnessPuck"></div>
+		<div class="brightness-container"
+			@mousedown="mouseDown('brightness')"
+			@mouseleave="mouseUp('brightness')"
+			@mouseup="mouseUp('brightness')"
+			@touchstart.prevent="mouseDown('brightness')"
+			@touchend.prevent="mouseUp('brightness')"
+			>
+			<div class="brightness-slider" ref="brightnessWidth">
+				<div class="puck" ref="brightnessPuck"></div>
+			</div>
 		</div>
 
-		<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 	</main>
 
-	<footer bp="grid 4" :style="cssVars">
-		<button class="icon icon--before icon-_left notext" @click="mouseDown('back')" ref="footerIconWidth"></button>
-		<h2>&nbsp;</h2>
-		<button :class="`icon icon--before icon-${tile.icon} notext`" @click="mouseDown('state')"></button>
+	<footer :style="cssVars">
+		<button
+			class="icon icon--before icon-_left notext"
+			@click="mouseDown('back')"
+			ref="footerIconWidth"></button>
+		<div>&nbsp;</div>
+		<button
+			:class="`icon icon--before icon-_onoff notext ${animations.button} state-${tile.state}`"
+			@mousedown="mouseDown('button')"
+			@mouseleave="mouseUp('button')"
+			@mouseup="mouseUp('button')"
+			@touchstart="mouseDown('button')"
+			@touchend.prevent="mouseUp('button')"
+			v-bind:disabled="!tile.enabled"></button>
 	</footer>
 
 </template>
 
+
+
 <style scoped>
-.colour-picker .puck,
+main
+{
+	display: grid;
+	padding: 1em;
+	grid-template-rows: 70% 30%;
+}
+
+.colour-wheel .puck,
 .brightness-slider .puck
 {
 	background-color: var(--puck-colour);

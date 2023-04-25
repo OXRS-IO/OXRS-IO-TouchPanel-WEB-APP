@@ -12,6 +12,7 @@ export default
 {
 	/**
 	 * @description Prep timestamp ready for hold events
+	 * @memberof ButtonLink
 	 * @return {Object}
 	 */
 	data()
@@ -19,6 +20,9 @@ export default
 		return {
 			tile_height: null,
 			icon_height: null,
+			timer: null,
+			interval: 500,
+			animation: null,
 		}
 	},
 
@@ -27,7 +31,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLink
 		 * @return {Object}
 		 */
 		cssVars()
@@ -44,8 +48,78 @@ export default
 	methods:
 	{
 		/**
-		 * @description Mouse click event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @description Mouse down event handler
+		 * @memberof ButtonLink
+		 * @return {void}
+		 */
+		mouseDown()
+		{
+			if (!this.tile.enabled) return
+
+			this.animation = 'press-animation'
+			this.timer = setInterval(this.mouseHold, this.interval)
+		},
+
+
+		/**
+		 * @description Mouse up event handler
+		 * @memberof ButtonLink
+		 * @return {void}
+		 */
+		mouseUp()
+		{
+			if (!this.timer) return
+
+			clearInterval(this.timer)
+			this.timer = null
+
+			if (this.interval == 500)
+			{
+				this.press()
+			}
+			else
+			{
+				this.interval = 500
+			}
+
+			this.animation = 'bounce-animation'
+		},
+
+
+		/**
+		 * @description Mouse hold event handler
+		 * @memberof ButtonLink
+		 * @return {void}
+		 */
+		mouseHold()
+		{
+			this.hold()
+
+			// Only fire `hold` event once
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = 'bounce-animation'
+		},
+
+
+		/**
+		 * @description Mouse cancel event handler
+		 * @memberof ButtonLink
+		 * @return {void}
+		 */
+		mouseCancel()
+		{
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = ''
+		},
+
+
+		/**
+		 * @description Action press event
+		 * @memberof ButtonLink
 		 * @return {void}
 		 */
 		press()
@@ -56,8 +130,27 @@ export default
 
 
 		/**
+		 * @description Send hold event from Tile
+		 * @memberof ButtonLink
+		 * @return {void}
+		 */
+		hold()
+		{
+			let payload = {};
+			payload.screen = this.tile.screen
+			payload.tile = this.tile.id
+			payload.style = this.tile.style
+			payload.type = 'button'
+			payload.state = this.tile.state
+			payload.event = 'hold'
+
+			this.$root.mqttSend(payload)
+		},
+
+
+		/**
 		 * @description Window resize handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLink
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -70,7 +163,7 @@ export default
 
 	/**
 	 * @description Called when view is ready
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonLink
 	 * @return {void}
 	 */
 	mounted()
@@ -82,7 +175,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonLink
 	 * @return {void}
 	 */
 	unmounted()
@@ -94,7 +187,7 @@ export default
 
 
 <template>
-<div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.style} enabled-${tile.enabled}`" v-bind:id="tile.id" :style="cssVars" ref="tileheight">
+<div bp="grid vertical-start" :class="`tile state-${tile.state} button-${tile.style} enabled-${tile.enabled} ${animation}`" v-bind:id="tile.id" :style="cssVars" ref="tileheight">
 
 	<div class="image"></div>
 
@@ -110,7 +203,16 @@ export default
 	</div>
 
 	<div class="buttons">
-		<button @click="press" class="icon--mask icon-_right" v-bind:disabled="!tile.enabled"></button>
+		<button
+			@mousedown="mouseDown"
+			@mouseup="mouseUp"
+			@mouseout="mouseUp"
+			@touchstart="mouseDown"
+			@touchend.prevent="mouseUp"
+			@touchmove="mouseCancel"
+			class="icon--mask icon-_right"
+			v-bind:disabled="!tile.enabled">
+		</button>
 	</div>
 
 </div>

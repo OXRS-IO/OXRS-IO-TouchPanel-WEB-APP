@@ -30,7 +30,7 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/screen/:screen/tile/:tile/controls',
+			path: '/screen/:screen/tile/:tile',
 			name: 'Controls',
 			component: Template,
 			props: {

@@ -516,6 +516,20 @@ export default
 		},
 
 
+		/**
+		 * @description Set styles on #app element
+		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @param {object} css {style: value} pairs
+		 * @return {void}
+		 */
+		setAppCss(css)
+		{
+			for (let style in css)
+			{
+				document.getElementById('app').style[style] = css[style]
+			}
+		},
+
 
 		/**
 		 * @description Determine mime type from base64 encoded string
@@ -549,6 +563,8 @@ export default
 	 */
 	mounted()
 	{
+		this.setAppCss({"display": "grid", "maxHeight": "100vh"})
+
 		// Check for saved config
 		if (this.host != null && this.port != null)
 		{

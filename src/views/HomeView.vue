@@ -23,7 +23,7 @@ export default
 
 <template>
 
-	<div bp="container">
+	<main bp="container">
 		<div bp="text-center">
 			<h2 class="logo-before">OXRS Touch&nbsp;Panel</h2>
 		</div>
@@ -37,11 +37,16 @@ export default
 				<button @click="this.$root.navigateToUrl('/config')">Settings</button>
 			</li>
 		</ul>
-	</div>
+	</main>
 
 </template>
 
 <style scoped>
+main
+{
+	padding: 1em;
+}
+
 h2
 {
 	margin-bottom: 3rem;

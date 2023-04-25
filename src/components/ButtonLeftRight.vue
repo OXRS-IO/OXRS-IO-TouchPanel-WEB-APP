@@ -11,7 +11,8 @@ defineProps({
 export default
 {
 	/**
-	 * @description Prep timer ready for hold events
+	 * @description Prep data ready for populating
+	 * @memberof ButtonLeftRight
 	 * @return {Object}
 	 */
 	data()
@@ -30,7 +31,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @return {Object}
 		 */
 		cssVars()
@@ -48,7 +49,7 @@ export default
 	{
 		/**
 		 * @description Mouse down event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @param {String} type `button|left|right`
 		 * @return {void}
 		 */
@@ -63,7 +64,7 @@ export default
 
 		/**
 		 * @description Mouse up event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @param {String} type `button|left|right`
 		 * @return {void}
 		 */
@@ -89,7 +90,7 @@ export default
 
 		/**
 		 * @description Mouse hold event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @param {String} type `button|left|right`
 		 * @return {void}
 		 */
@@ -109,8 +110,22 @@ export default
 
 
 		/**
+		 * @description Mouse cancel event handler
+		 * @memberof ButtonLeftRight
+		 * @return {void}
+		 */
+		mouseCancel()
+		{
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = ''
+		},
+
+
+		/**
 		 * @description Send press event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @param {String} type `button|left|right`
 		 * @return {void}
 		 */
@@ -136,7 +151,7 @@ export default
 
 		/**
 		 * @description Send hold event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @param {String} type `button|left|right`
 		 * @return {void}
 		 */
@@ -162,7 +177,7 @@ export default
 
 		/**
 		 * @description Window resize handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonLeftRight
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -175,7 +190,7 @@ export default
 
 	/**
 	 * @description Called when view is ready
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonLeftRight
 	 * @return {void}
 	 */
 	mounted()
@@ -187,7 +202,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonLeftRight
 	 * @return {void}
 	 */
 	 unmounted()
@@ -218,23 +233,26 @@ export default
 		<button @mousedown="mouseDown('button')"
 			@mouseup="mouseUp('button')"
 			@mouseout="mouseUp('button')"
-			@touchstart.prevent="mouseDown('button')"
+			@touchstart="mouseDown('button')"
 			@touchend.prevent="mouseUp('button')"
+			@touchmove="mouseCancel"
 			v-bind:disabled="!tile.enabled"></button>
 
 		<button @mousedown="mouseDown('left')"
 			@mouseup="mouseUp('left')"
 			@mouseout="mouseUp('left')"
-			@touchstart.prevent="mouseDown('left')"
+			@touchstart="mouseDown('left')"
 			@touchend.prevent="mouseUp('left')"
+			@touchmove="mouseCancel"
 			class="icon--mask icon-_left"
 			v-bind:disabled="!tile.enabled"></button>
 
 		<button @mousedown="mouseDown('right')"
 			@mouseup="mouseUp('right')"
 			@mouseout="mouseUp('right')"
-			@touchstart.prevent="mouseDown('right')"
+			@touchstart="mouseDown('right')"
 			@touchend.prevent="mouseUp('right')"
+			@touchmove="mouseCancel"
 			class="icon--mask icon-_right"
 			v-bind:disabled="!tile.enabled"></button>
 	</div>

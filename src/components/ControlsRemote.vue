@@ -12,7 +12,7 @@ export default
 {
 	/**
 	 * @description Prep data ready for populating
-	 * @memberof ControlsDropDown
+	 * @memberof ControlsRemote
 	 * @return {Object}
 	 */
 	data()
@@ -31,6 +31,7 @@ export default
 				info: null,
 				cancel: null,
 				menu: null,
+				button: null,
 			},
 		}
 	},
@@ -41,7 +42,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof ControlsDropDown
+		 * @memberof ControlsRemote
 		 * @return {Object}
 		 */
 		cssVars()
@@ -59,8 +60,8 @@ export default
 	{
 		/**
 		 * @description Mouse down event handler
-		 * @memberof ControlsPickerRgb
-		 * @param {String} type `back|home|left|right|up|down|ok|info|menu|cancel`
+		 * @memberof ControlsRemote
+		 * @param {String} type `back|home|left|right|up|down|ok|info|menu|cancel|button`
 		 * @return {void}
 		 */
 		mouseDown(type)
@@ -71,15 +72,7 @@ export default
 					this.$root.navigateToUrl(`/screen/${this.tile.screen}`)
 					break
 
-				case 'home':
-				case 'info':
-				case 'cancel':
-				case 'list':
-				case 'ok':
-				case 'left':
-				case 'up':
-				case 'right':
-				case 'down':
+				default:
 					this.animations[type] = 'press-animation'
 					this.timer = setInterval(this.mouseHold, this.interval, type)
 					break
@@ -89,8 +82,8 @@ export default
 
 		/**
 		 * @description Mouse up event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel`
+		 * @memberof ControlsRemote
+		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel|button`
 		 * @return {void}
 		 */
 		mouseUp(type)
@@ -115,8 +108,8 @@ export default
 
 		/**
 		 * @description Send press event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel`
+		 * @memberof ControlsRemote
+		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel|button`
 		 * @return {void}
 		 */
 		press(type)
@@ -134,21 +127,29 @@ export default
 
 		/**
 		 * @description Mouse hold event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel`
+		 * @memberof ControlsRemote
+		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel|button`
 		 * @return {void}
 		 */
 		mouseHold(type)
 		{
 			this.interval = 200
 			this.hold(type)
+
+			if (type != 'button') return
+
+			// Only fire `hold` event once
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animations[type] = 'bounce-animation'
 		},
 
 
 		/**
 		 * @description Send hold event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
-		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel`
+		 * @memberof ControlsRemote
+		 * @param {String} type `home|left|right|up|down|ok|info|menu|cancel|button`
 		 * @return {void}
 		 */
 		hold(type)
@@ -166,7 +167,7 @@ export default
 
 		/**
 		 * @description Window resize handler
-		 * @memberof ControlsDropDown
+		 * @memberof ControlsRemote
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -181,11 +182,13 @@ export default
 
 	/**
 	 * @description Called when view is loaded
-	 * @memberof ControlsDropDown
+	 * @memberof ControlsRemote
 	 * @returns {void}
 	 */
 	mounted()
 	{
+		this.$root.setAppCss({'gridTemplateRows': '4em auto 4em'})
+
 		window.addEventListener("resize", this.resizeHandler)
 		this.resizeHandler()
 	},
@@ -194,7 +197,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof ControlsDropDown
+	 * @memberof ControlsRemote
 	 * @return {void}
 	 */
 	unmounted()
@@ -209,88 +212,119 @@ export default
 <template>
 
 	<header :style="cssVars">
-		<div bp="container">
-			<h2 :class="`icon icon--before icon-${tile.icon}`">{{ tile.label }}</h2>
-		</div>
+		<h1 :class="`icon icon--before icon-${tile.icon}`">{{ tile.label }}</h1>
 	</header>
 
-	<main bp="container" :style="cssVars" style="max-width: 500px">
+	<main :style="cssVars">
 
-		<div class="header-pad">&nbsp;<!-- compensates for fixed header --></div>
-
-		<div bp="grid 4">
+		<div bp="grid 4" class="buttons-container">
 			<button :class="`circle icon icon--before icon-_home notext ${animations.home}`"
-				@mousedown.prevent="mouseDown('home')"
-				@mouseleave.prevent="mouseUp('home')"
-				@mouseup.prevent="mouseUp('home')"
-				@touchstart.prevent="mouseDown('home')"
-				@touchend.prevent="mouseUp('home')" ref="home">Home</button>
+				@mousedown="mouseDown('home')"
+				@mouseleave="mouseUp('home')"
+				@mouseup="mouseUp('home')"
+				@touchstart="mouseDown('home')"
+				@touchend.prevent="mouseUp('home')"
+				ref="home">Home</button>
 
 			<button :class="`circle icon icon--before icon-_up notext ${animations.up}`"
-				@mousedown.prevent="mouseDown('up')"
-				@mouseleave.prevent="mouseUp('up')"
-				@mouseup.prevent="mouseUp('up')"
-				@touchstart.prevent="mouseDown('up')"
-				@touchend.prevent="mouseUp('up')" ref="up">Up</button>
+				@mousedown="mouseDown('up')"
+				@mouseleave="mouseUp('up')"
+				@mouseup="mouseUp('up')"
+				@touchstart="mouseDown('up')"
+				@touchend.prevent="mouseUp('up')"
+				ref="up">Up</button>
 
 			<button :class="`circle icon icon--before icon-_info notext ${animations.info}`"
-				@mousedown.prevent="mouseDown('info')"
-				@mouseleave.prevent="mouseUp('info')"
-				@mouseup.prevent="mouseUp('info')"
-				@touchstart.prevent="mouseDown('info')"
-				@touchend.prevent="mouseUp('info')" ref="info">Info</button>
+				@mousedown="mouseDown('info')"
+				@mouseleave="mouseUp('info')"
+				@mouseup="mouseUp('info')"
+				@touchstart="mouseDown('info')"
+				@touchend.prevent="mouseUp('info')"
+				ref="info">Info</button>
 
 			<button :class="`circle icon icon--before icon-_left notext ${animations.left}`"
-				@mousedown.prevent="mouseDown('left')"
-				@mouseleave.prevent="mouseUp('left')"
-				@mouseup.prevent="mouseUp('left')"
-				@touchstart.prevent="mouseDown('left')"
-				@touchend.prevent="mouseUp('left')" ref="left">Left</button>
+				@mousedown="mouseDown('left')"
+				@mouseleave="mouseUp('left')"
+				@mouseup="mouseUp('left')"
+				@touchstart="mouseDown('left')"
+				@touchend.prevent="mouseUp('left')"
+				ref="left">Left</button>
 
 			<button :class="`circle ${animations.ok}`"
-				@mousedown.prevent="mouseDown('ok')"
-				@mouseleave.prevent="mouseUp('ok')"
-				@mouseup.prevent="mouseUp('ok')"
-				@touchstart.prevent="mouseDown('ok')"
-				@touchend.prevent="mouseUp('ok')" ref="ok">OK</button>
+				@mousedown="mouseDown('ok')"
+				@mouseleave="mouseUp('ok')"
+				@mouseup="mouseUp('ok')"
+				@touchstart="mouseDown('ok')"
+				@touchend.prevent="mouseUp('ok')"
+				ref="ok">OK</button>
 
 			<button :class="`circle icon icon--before icon-_right notext ${animations.right}`"
-				@mousedown.prevent="mouseDown('right')"
-				@mouseleave.prevent="mouseUp('right')"
-				@mouseup.prevent="mouseUp('right')"
-				@touchstart.prevent="mouseDown('right')"
-				@touchend.prevent="mouseUp('right')" ref="right">Right</button>
+				@mousedown="mouseDown('right')"
+				@mouseleave="mouseUp('right')"
+				@mouseup="mouseUp('right')"
+				@touchstart="mouseDown('right')"
+				@touchend.prevent="mouseUp('right')"
+				ref="right">Right</button>
 
 			<button :class="`circle icon icon--before icon-_backspace notext ${animations.cancel}`"
-				@mousedown.prevent="mouseDown('cancel')"
-				@mouseleave.prevent="mouseUp('cancel')"
-				@mouseup.prevent="mouseUp('cancel')"
-				@touchstart.prevent="mouseDown('cancel')"
-				@touchend.prevent="mouseUp('cancel')" ref="cancel">Cancel</button>
+				@mousedown="mouseDown('cancel')"
+				@mouseleave="mouseUp('cancel')"
+				@mouseup="mouseUp('cancel')"
+				@touchstart="mouseDown('cancel')"
+				@touchend.prevent="mouseUp('cancel')"
+				ref="cancel">Cancel</button>
 
 			<button :class="`circle icon icon--before icon-_down notext ${animations.down}`"
-				@mousedown.prevent="mouseDown('down')"
-				@mouseleave.prevent="mouseUp('down')"
-				@mouseup.prevent="mouseUp('down')"
-				@touchstart.prevent="mouseDown('down')"
-				@touchend.prevent="mouseUp('down')" ref="down">Down</button>
+				@mousedown="mouseDown('down')"
+				@mouseleave="mouseUp('down')"
+				@mouseup="mouseUp('down')"
+				@touchstart="mouseDown('down')"
+				@touchend.prevent="mouseUp('down')"
+				ref="down">Down</button>
 
 			<button :class="`circle icon icon--before icon-_settings notext ${animations.list}`"
-				@mousedown.prevent="mouseDown('list')"
-				@mouseleave.prevent="mouseUp('list')"
-				@mouseup.prevent="mouseUp('list')"
-				@touchstart.prevent="mouseDown('list')"
-				@touchend.prevent="mouseUp('list')" ref="list">List</button>
+				@mousedown="mouseDown('list')"
+				@mouseleave="mouseUp('list')"
+				@mouseup="mouseUp('list')"
+				@touchstart="mouseDown('list')"
+				@touchend.prevent="mouseUp('list')"
+				ref="list">List</button>
 		</div>
 
-		<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
 	</main>
 
-	<footer bp="grid 4" :style="cssVars">
-		<button class="icon icon--before icon-_left notext" @click="mouseDown('back')" ref="footerIconWidth">Back</button>
+	<footer :style="cssVars">
+		<button
+			class="icon icon--before icon-_left notext"
+			@click="mouseDown('back')"
+			ref="footerIconWidth">Back</button>
+		<div>&nbsp;</div>
+		<button
+			:class="`icon icon--before icon-_onoff notext ${animations.button} state-${tile.state}`"
+			@mousedown="mouseDown('button')"
+			@mouseleave="mouseUp('button')"
+			@mouseup="mouseUp('button')"
+			@touchstart="mouseDown('button')"
+			@touchend.prevent="mouseUp('button')"
+			v-bind:disabled="!tile.enabled"></button>
 	</footer>
 </template>
 
-<style scoped>
 
+
+<style scoped>
+header
+{
+	grid-template-columns: auto;
+}
+main
+{
+	margin: auto 0;
+}
+.buttons-container
+{
+	margin: 0 auto;
+	padding: 1em;
+	max-width: 1000px;
+}
 </style>

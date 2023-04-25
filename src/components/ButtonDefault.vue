@@ -12,7 +12,7 @@ export default
 {
 	/**
 	 * @description Prep timer ready for hold events
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonDefault
 	 * @return {Object}
 	 */
 	data()
@@ -31,7 +31,7 @@ export default
 	{
 		/**
 		 * @description Populate CSS variables from computed values
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {Object}
 		 */
 		cssVars()
@@ -49,7 +49,7 @@ export default
 	{
 		/**
 		 * @description Mouse down event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {void}
 		 */
 		mouseDown()
@@ -63,7 +63,7 @@ export default
 
 		/**
 		 * @description Mouse up event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {void}
 		 */
 		mouseUp()
@@ -88,7 +88,7 @@ export default
 
 		/**
 		 * @description Mouse hold event handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {void}
 		 */
 		mouseHold()
@@ -104,8 +104,22 @@ export default
 
 
 		/**
+		 * @description Mouse cancel event handler
+		 * @memberof ButtonDefault
+		 * @return {void}
+		 */
+		mouseCancel()
+		{
+			clearInterval(this.timer)
+			this.timer = null
+			this.interval = 500
+			this.animation = ''
+		},
+
+
+		/**
 		 * @description Send press event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {void}
 		 */
 		press()
@@ -124,7 +138,7 @@ export default
 
 		/**
 		 * @description Send hold event from Tile
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {void}
 		 */
 		hold()
@@ -143,7 +157,7 @@ export default
 
 		/**
 		 * @description Window resize handler
-		 * @memberof OXRS-IO-TouchPanel-WEB-APP
+		 * @memberof ButtonDefault
 		 * @return {void}
 		 */
 		resizeHandler()
@@ -156,7 +170,7 @@ export default
 
 	/**
 	 * @description Called when view is ready
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonDefault
 	 * @return {void}
 	 */
 	mounted()
@@ -168,7 +182,7 @@ export default
 
 	/**
 	 * @description Called when view is unloaded
-	 * @memberof OXRS-IO-TouchPanel-WEB-APP
+	 * @memberof ButtonDefault
 	 * @return {void}
 	 */
 	unmounted()
@@ -195,11 +209,13 @@ export default
 	</div>
 
 	<div class="buttons">
-		<button @mousedown="mouseDown"
+		<button
+			@mousedown="mouseDown"
 			@mouseup="mouseUp"
 			@mouseout="mouseUp"
-			@touchstart.prevent="mouseDown"
+			@touchstart="mouseDown"
 			@touchend.prevent="mouseUp"
+			@touchmove="mouseCancel"
 			v-bind:disabled="!tile.enabled"></button>
 	</div>
 

@@ -159,6 +159,8 @@ export default
 	 */
 	mounted()
 	{
+		this.$root.setAppCss({'gridTemplateColumns': '100%', 'gridTemplateRows': 'calc(100vh - var(--footer-height)) 4em'})
+
 		window.addEventListener("resize", this.resizeHandler)
 		this.fetchTiles()
 		this.updateScreen()
@@ -208,9 +210,7 @@ export default
 		</template>
 	</main>
 
-	<div class="footer-pad">&nbsp;<!-- compensates for fixed footer --></div>
-
-	<footer bp="grid 4" :style="cssVars">
+	<footer :style="cssVars">
 		<template v-if="screen.footer.left">
 			<h2>{{ screen.footer.left }}</h2>
 		</template>
@@ -234,3 +234,12 @@ export default
 
 	</footer>
 </template>
+
+<style scoped>
+main
+{
+	grid-auto-rows: min-content;
+	padding: 1em;
+	overflow-y: scroll;
+}
+</style>
