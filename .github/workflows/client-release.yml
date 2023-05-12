@@ -27,10 +27,13 @@ jobs:
       - name: NPM Build
         run: npm run build
 
-      - name: Custom domain - GitHub Pages
-        run: echo 'touch.oxrs.io' > ./dist/CNAME
-      
       - name: Deploy to GitHub Pages
         if: success()
-        run: |
-          npx gh-pages --dist dist --cname touch.oxrs.io --force-ssl false
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: false
+          enable_jekyll: false
+          cname: touch.oxrs.io
+          cname_target: your-github-username.github.io
