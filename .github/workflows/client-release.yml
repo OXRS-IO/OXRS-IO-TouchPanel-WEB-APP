@@ -36,4 +36,4 @@ jobs:
           force_orphan: false
           enable_jekyll: false
           cname: touch.oxrs.io
-          cname_target: your-github-username.github.io
+          cname_target: oxrs-io.github.io/OXRS-IO-TouchPanel-WEB-APP
