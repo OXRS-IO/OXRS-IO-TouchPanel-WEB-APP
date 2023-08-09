@@ -6,7 +6,11 @@ Web app version of the [OXRS IO TouchPanel](https://oxrs.io/docs/firmware/touch-
 
 ### Caveats
 
-The NodeJS `paho-mqtt` library does not support self-signed SSL certificates, so the page itself mustn't be loaded via HTTPS and the MQTT broker mustn't be using TLS.
+The NodeJS `paho-mqtt` library does not support self-signed TLS certificates. Solutions:
+| Broker | Browser |
+|---|---|
+| CA-signed certificate | HTTPS |
+| TLS disabled | HTTP |
 
 ### Useage
 
