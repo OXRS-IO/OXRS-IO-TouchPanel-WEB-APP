@@ -22,6 +22,8 @@ export default
 			interval: 500,
 			footer_width: null,
 			circle_width: null,
+			container_width: null,
+			container_height: null,
 			animations: {
 				home: null,
 				left: null,
@@ -175,6 +177,19 @@ export default
 			// Hack for older browsers
 			this.footer_width = this.$refs.footerIconWidth.clientHeight * 0.7
 			this.icon_width = this.$refs.home.clientHeight
+
+			// Prioritise height of buttons container
+			this.$refs.buttonsContainer.style.height = 'calc(100vh - 16em)'
+			this.$refs.buttonsContainer.style.width = 'auto'
+
+			this.container_width = this.$refs.pageContainer.clientWidth
+			this.container_height = this.$refs.pageContainer.clientHeight
+
+			if (this.container_height > this.container_width)
+			{
+				this.$refs.buttonsContainer.style.height = 'auto'
+				this.$refs.buttonsContainer.style.width = '100%'
+			}
 		}
 	},
 
@@ -215,9 +230,9 @@ export default
 		<h1 :class="`icon icon--before icon-${tile.icon}`">{{ tile.label }}</h1>
 	</header>
 
-	<main :style="cssVars">
+	<main :style="cssVars" ref="pageContainer">
 
-		<div bp="grid 4" class="buttons-container">
+		<div bp="grid 4" class="buttons-container" ref="buttonsContainer">
 			<button :class="`circle icon icon--before icon-_home notext ${animations.home}`"
 				@mousedown="mouseDown('home')"
 				@mouseleave="mouseUp('home')"
@@ -319,12 +334,13 @@ header
 }
 main
 {
-	margin: auto 0;
+	display: content;
 }
 .buttons-container
 {
-	margin: 0 auto;
+	margin: auto;
+	aspect-ratio: 1 / 1;
+	height: calc(100vh - 16em);
 	padding: 1em;
-	max-width: 1000px;
 }
 </style>
