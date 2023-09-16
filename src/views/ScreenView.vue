@@ -81,6 +81,9 @@ export default
 		{
 			return {
 				'--footer-icon-width': `${this.footer_width}px`,
+				'--footer-colour-left': `${this.screen.footerColours.left}`,
+				'--footer-colour-center': `${this.screen.footerColours.center}`,
+				'--footer-colour-right': `${this.screen.footerColours.right}`,
 			}
 		}
 	},
@@ -212,24 +215,24 @@ export default
 
 	<footer :style="cssVars">
 		<template v-if="screen.footer.left">
-			<h2>{{ screen.footer.left }}</h2>
+			<h2 class="js-col-left">{{ screen.footer.left }}</h2>
 		</template>
 		<template v-else>
-			<button class="icon icon--before icon-_home notext" @click="press('left')">Home</button>
+			<button class="icon icon--before icon-_home notext js-col-left" @click="press('left')">Home</button>
 		</template>
 
 		<template v-if="screen.footer.center">
-			<button @click="press('center')" ref="footerIconWidth">{{ screen.footer.center }}</button>
+			<button @click="press('center')" ref="footerIconWidth" class="js-col-center">{{ screen.footer.center }}</button>
 		</template>
 		<template v-else>
-			<button @click="press('center')" ref="footerIconWidth">{{ screen.label }}</button>
+			<button @click="press('center')" ref="footerIconWidth" class="js-col-center">{{ screen.label }}</button>
 		</template>
 
 		<template v-if="screen.footer.right">
-			<h2>{{ screen.footer.right }}</h2>
+			<h2 class="js-col-right">{{ screen.footer.right }}</h2>
 		</template>
 		<template v-else>
-			<button class="icon icon--before icon-_settings notext" @click="press('right')">Settings</button>
+			<button class="icon icon--before icon-_settings notext js-col-right" @click="press('right')">Settings</button>
 		</template>
 
 	</footer>
@@ -242,4 +245,7 @@ main
 	padding: 1em;
 	overflow-y: scroll;
 }
+footer .js-col-left { color: var(--footer-colour-left); }
+footer .js-col-center { color: var(--footer-colour-center); }
+footer .js-col-right { color: var(--footer-colour-right); }
 </style>

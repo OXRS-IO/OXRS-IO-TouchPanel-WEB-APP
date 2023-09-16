@@ -14,6 +14,11 @@ class Screen
 		'right': ''
 	}
 	backgroundColorRgb = {r: 0, g: 0, b: 0}
+	footerColours = {
+		'left': '#fff',
+		'center': '#fff',
+		'right': '#fff'
+	}
 
 
 	/**
@@ -59,9 +64,16 @@ class Screen
 				case 'footer':
 					if (typeof data[key] != 'object') data[key] = {}
 
-					this.footer.left = ('left' in data[key]) ? data[key]['left'] : null
-					this.footer.center = ('center' in data[key]) ? data[key]['center'] : null
-					this.footer.right = ('right' in data[key]) ? data[key]['right'] : null
+					this.footerColours = {
+						'left': '#fff',
+						'center': '#fff',
+						'right': '#fff'
+					}
+
+					this.footer.left = ('left' in data[key]) ? this.updateFooter(data[key]['left'], 'left') : null
+					this.footer.center = ('center' in data[key]) ? this.updateFooter(data[key]['center'], 'center') : null
+					this.footer.right = ('right' in data[key]) ? this.updateFooter(data[key]['right'], 'right') : null
+					break
 
 				case 'backgroundColorRgb':
 					if (typeof data[key] != "object") data[key] = {}
@@ -71,7 +83,7 @@ class Screen
 					this.backgroundColorRgb.b = (('b' in data[key]) && !isNaN(data[key]['b'])) ? data[key]['b'] : 0
 
 					this._app.setBgColour(this.backgroundColorRgb)
-					break;
+					break
 
 				// All other screen properties
 				default:
@@ -156,6 +168,26 @@ class Screen
 				this.addTile(list[idx])
 			}
 		}
+	}
+
+
+	/**
+	 * Extract color format from footer string
+	 * @param {string} input `#RRGGBB label#`|`Label`
+	 * @param {string} column `left|center|right`
+	 * @returns {string} Label part of input
+	 */
+	updateFooter(input, column)
+	{
+		const pattern = /#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})\s(.*)#/g
+		const matches = pattern.exec(input)
+
+		// No colour style, reset
+		if (matches == null) return input
+
+		// Apply colour style, and return label
+		this.footerColours[column] = `#${matches[1]}`
+		return matches[4]
 	}
 }
 
