@@ -202,9 +202,9 @@ h2.icon--after:after
 footer h2
 {
 	padding: 1rem;
-    display: flex;
+	display: flex;
 	justify-content: left;
-    align-items: center;
+	align-items: center;
 }
 footer h2:nth-child(2)
 {
