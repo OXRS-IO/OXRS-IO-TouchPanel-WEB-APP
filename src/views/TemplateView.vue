@@ -199,13 +199,20 @@ h2.icon--after:after
 	top: auto;
 	left: auto;
 }
+footer h2
+{
+	padding: 1rem;
+    display: flex;
+	justify-content: left;
+    align-items: center;
+}
 footer h2:nth-child(2)
 {
-	text-align: center;
+	justify-content: center;
 }
 footer h2:nth-child(3)
 {
-	text-align: right;
+	justify-content: right;
 }
 header button,
 footer button

@@ -4,6 +4,6 @@ import router from './router'
 
 const app = createApp(App)
 
-app.config.globalProperties.$version = "2023-09-16T01:03:32.190Z"
+app.config.globalProperties.$version = "2023-09-16T02:16:03.105Z"
 app.use(router)
 app.mount('#app')
